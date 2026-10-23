@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#11150f"><meta name="description" content="Plan Gray Zone Warfare 0.5 hideout upgrades, track your stash, and save a shared material shopping list for each operator.">
+  <title>HIDEOUT — GZW Operations Desk</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css">
+  <script src="catalog.js" defer></script><script src="core.js" defer></script><script src="app.js" defer></script><script src="sync.js" defer></script><script src="cloud-config.js" defer></script><script src="cloud.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to tracker</a>
+  <header class="topbar">
+    <a class="brand" href="#desk" aria-label="Hideout operations desk"><span class="brand-mark" aria-hidden="true">H</span><span>HIDEOUT<small>GRAY ZONE WARFARE COMPANION</small></span></a>
+    <span class="version">ROGUE OPS <b>0.5</b></span>
+    <div class="top-actions"><span id="save-status" class="save-status" role="status">Saved on this device</span><label class="sr-only" for="operator-select">Active operator</label><select id="operator-select" aria-label="Active operator"></select><button id="manage-profile" class="icon-button" aria-label="Manage operators" title="Manage operators">＋</button><button id="theme-toggle" class="icon-button" aria-label="Switch color theme" title="Switch color theme">◐</button><button id="account-menu" class="button secondary">Sign in / Cloud</button><button id="backup-menu" class="button secondary">Backups</button></div>
+  </header>
+  <main id="main" class="main">
+    <div class="page-heading"><div><p class="eyebrow">OPERATIONS DESK <span>/</span> <span id="operator-caption"></span></p><h1>Your next supply run.</h1><p class="lead">Your upgrades. Your stash. One shared shopping list.</p></div><div class="headline-stats"><div><strong id="units-needed">—</strong><span>items to collect</span></div><div><strong id="goals-count">—</strong><span>upgrade goals</span></div><div><strong id="built-count">—</strong><span>tiers built</span></div></div></div>
+    <nav class="view-tabs" aria-label="Tracker views"><button data-view="desk" aria-current="page">Supply list</button><button data-view="upgrades">Hideout upgrades <span id="station-count"></span></button><button data-view="inventory">All materials <span id="item-count"></span></button><button data-view="sources">Data & sources</button></nav>
+    <div class="cloud-strip" aria-live="polite"><span id="cloud-mode">GUEST MODE</span><span id="cloud-status">Progress stays in this browser. Sign-in is optional.</span><button id="cloud-action" class="text-button">Cloud saves ↗</button></div><div id="cloud-alert" class="notice warning" hidden></div><div id="storage-warning" class="notice warning" hidden></div>
+    <div id="notice" class="notice" role="status" hidden></div>
+    <section id="desk-view" class="view">
+      <div class="desk-grid">
+        <aside class="goal-column"><section class="panel"><div class="panel-title"><h2>Upgrade goals</h2><button data-open-upgrades class="text-button">Edit plan ↗</button></div><div id="goal-list"></div><div class="goal-footer"><span class="dot"></span> Shared stash, counted once.</div></section><section class="budget panel"><label for="cash-input">Cash in stash</label><div class="cash-field"><span>$</span><input id="cash-input" type="number" min="0" max="999999999" step="1" inputmode="numeric"></div><div id="cash-summary"></div></section><button id="undo" class="button secondary undo" disabled>↶ Undo last change</button><p class="small-muted">Progress saves automatically on this device. Use Backups to move between the website, desktop app, or another PC.</p></aside>
+        <section class="panel supply-panel" aria-label="Shared material list"><div class="list-toolbar"><label class="search"><span aria-hidden="true">⌕</span><input id="desk-search" type="search" placeholder="Find a material…" aria-label="Find a material in your supply list"></label><label class="check-label"><input id="needed-only" type="checkbox" checked>Needed only</label><label class="sr-only" for="desk-sort">Sort supply list</label><select id="desk-sort"><option value="needed">Most needed</option><option value="name">Item name</option></select></div><div id="plan-warning" class="inline-warning" hidden></div><div id="supply-table"></div><div id="item-detail" class="item-detail"></div></section>
+      </div>
+    </section>
+    <section id="upgrades-view" class="view" hidden><div class="section-toolbar"><div><h2>Build your plan.</h2><p class="small-muted">Set what you’ve built, then choose the tier you want to reach.</p></div><div class="toolbar-actions"><label class="sr-only" for="room-filter">Filter upgrades by room</label><select id="room-filter"><option value="all">All rooms</option></select><button id="track-next" class="button secondary">Track all next tiers</button><button id="clear-plan" class="text-button">Clear plan</button></div></div><div id="upgrade-catalog"></div></section>
+    <section id="inventory-view" class="view" hidden><div class="section-toolbar"><div><h2>Everything in your stash.</h2><p class="small-muted">Personal reserves are extra stock to keep after your planned upgrades.</p></div><div class="toolbar-actions"><label class="search"><span aria-hidden="true">⌕</span><input id="inventory-search" type="search" placeholder="Search the full item list…" aria-label="Search all materials"></label><label class="sr-only" for="category-filter">Material category</label><select id="category-filter"><option value="all">All categories</option></select><label class="check-label"><input type="checkbox" id="owned-only">Owned only</label></div></div><div class="panel" id="inventory-table"></div></section>
+    <section id="sources-view" class="view" hidden><div id="sources-content"></div></section>
+    <footer class="footer"><span>Independent fan tool · Not affiliated with MADFINGER Games</span><button data-view="sources" id="data-caption" class="text-button">Checking catalogue…</button></footer>
+  </main>
+  <dialog id="account-modal" aria-labelledby="account-title"><div id="account-content"></div></dialog>
+  <dialog id="modal"><div id="modal-content"></div></dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <input id="import-file" type="file" accept="application/json,.json" hidden>
+  <noscript><p class="notice">Enable JavaScript to use the tracker. Progress is stored in your browser.</p></noscript>
+</body>
+</html>
