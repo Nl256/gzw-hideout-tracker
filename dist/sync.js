@@ -42,6 +42,7 @@
    const remote=this.o.clean(row.payload),remoteText=canonical(remote);
    const action=decision(localText,this.meta.base,remoteText,this.o.exists());
    if(action==='download'){
+    if(this.o.canApply&&!this.o.canApply()){this.emit('waiting');return;}
     this.o.backup(local);this.o.apply(remote);this.remember(remote,row.revision);this.conflict=null;this.emit('synced');
    }else if(action==='same'){
     this.remember(remote,row.revision);this.conflict=null;this.emit('synced');

@@ -6,7 +6,7 @@ const escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>'
 const dialog=$('#account-modal'),content=$('#account-content');
 let client=null,user=null,engine=null,accountKey=null,timer=null,status='guest',authError='',emailSent=false,email='',epoch=0,keepDraftOnSignout=false;
 const configured=Boolean(config.url&&config.publishableKey);
-const labels={guest:'Progress stays in this browser. Sign-in is optional.',connecting:'Opening your account save…',syncing:'Saving and checking for updates…',synced:'Saved to your account · automatic sync on.',pending:'Saved here · waiting to sync.',offline:'Saved here · offline. Will sync automatically when connected.',conflict:'Two versions need your attention. Both have been kept.',changed:'Another device saved first. Check again to review.',new:'Choose how to start your cloud save.'};
+const labels={waiting:'An update is ready. Finish editing to apply it automatically.',guest:'Progress stays in this browser. Sign-in is optional.',connecting:'Opening your account save…',syncing:'Saving and checking for updates…',synced:'Saved to your account · automatic sync on.',pending:'Saved here · waiting to sync.',offline:'Saved here · offline. Will sync automatically when connected.',conflict:'Two versions need your attention. Both have been kept.',changed:'Another device saved first. Check again to review.',new:'Choose how to start your cloud save.'};
 function setStatus(next){if(next==='syncing'&&status==='synced')return;const changed=status!==next;status=next;$('#cloud-mode').textContent=user?'CLOUD ACCOUNT':'GUEST MODE';$('#cloud-status').textContent=labels[next]||next;$('#account-menu').textContent=user?'My account':'Sign in / Cloud';$('#cloud-action').textContent=['conflict','changed','new'].includes(next)?'Review saves ↗':'Cloud saves ↗';$('#cloud-alert').hidden=!['conflict','changed'].includes(next);$('#cloud-alert').textContent=labels[next];if(changed&&dialog.open&&!document.activeElement?.closest('#email-form'))renderAccount();}
 const header=title=>`<div class="modal-header"><h2 id="account-title">${title}</h2><button class="icon-button" data-account-close aria-label="Close account dialog">×</button></div>`;
 function renderAccount(){
@@ -33,7 +33,7 @@ async function setSession(session){
   async write(payload,revision){const {data,error}=await client.rpc('save_hideout_progress',{p_payload:payload,p_expected_revision:revision});if(error)throw error;return data[0];}
  };
  const readMeta=()=>{try{return JSON.parse(localStorage.getItem(key+':sync'));}catch{return null;}};
- engine=new S.Engine({remote,get:A.getState,exists:()=>localStorage.getItem(key)!==null,clean:A.clean,apply:A.apply,readMeta,writeMeta:m=>localStorage.setItem(key+':sync',JSON.stringify(m)),backup:p=>backup(key,p),status:s=>{if(current===epoch)setStatus(s);}});
+ engine=new S.Engine({remote,get:A.getState,exists:()=>localStorage.getItem(key)!==null,clean:A.clean,apply:A.apply,canApply:()=>!editing(),readMeta,writeMeta:m=>localStorage.setItem(key+':sync',JSON.stringify(m)),backup:p=>backup(key,p),status:s=>{if(current===epoch)setStatus(s);}});
  await engine.sync();if(current===epoch&&['new','conflict'].includes(status))showAccount();
 }
 function queueSync(){if(!engine)return;clearTimeout(timer);if(!['conflict','new'].includes(status))setStatus('pending');timer=setTimeout(()=>engine?.sync(),850);}
