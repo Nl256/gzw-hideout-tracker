@@ -47,7 +47,12 @@ Published material and upgrade-list corrections download automatically without r
 
 For new app features, download the latest Windows EXE again. Your existing PC progress is kept. Check the [release notes](https://github.com/Nl256/gzw-hideout-tracker/releases/latest) to see what's changed.
 
+## Bugs and suggestions
+
+Open **Feedback** in the tracker to **Report a bug**, **Suggest an improvement**, or browse existing conversations. Reports go to [GitHub Issues](https://github.com/Nl256/gzw-hideout-tracker/issues), where the maintainer can reply and track fixes. Anyone can read them; a free GitHub account is needed to post or comment. Posts and attachments are public, so leave out passwords, private account details, and save backups. The tracker only fills in its version, app type, and catalogue date.
+
 ## Your privacy
+
 
 Guest progress stays on your device. Cloud saves are linked to your GitHub account and are not visible to other players or posted in this public repository. Sign-in does not give the tracker access to your GitHub repositories or password.
 

@@ -1,0 +1,33 @@
+name: Suggest an improvement
+description: Share a feature idea or a way to make the tracker easier to use.
+title: "[Suggestion] "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Share an idea for the tracker. Suggestions and attachments are public, and the maintainer can discuss the idea with you here. Leave out private account details and save backups.
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like to improve?
+      placeholder: Describe the feature or change you have in mind.
+    validations:
+      required: true
+  - type: textarea
+    id: benefit
+    attributes:
+      label: How would it help you while playing?
+      description: Give an example of when you would use it or what currently takes too much effort.
+    validations:
+      required: true
+  - type: input
+    id: tracker-version
+    attributes:
+      label: Tracker version and app
+      description: Filled in when you open this form from Feedback. You can also say whether your idea is for the website, Windows app, or both.
+  - type: textarea
+    id: extra-details
+    attributes:
+      label: Examples or extra details (optional)
+      description: Add a sketch, screenshot, or another way you have tried solving the problem.

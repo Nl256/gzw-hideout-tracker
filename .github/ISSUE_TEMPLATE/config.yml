@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Browse existing feedback
+    url: https://github.com/Nl256/gzw-hideout-tracker/issues
+    about: Check existing bugs and suggestions, follow replies, or add your experience.

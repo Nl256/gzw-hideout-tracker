@@ -1,0 +1,47 @@
+name: Report a bug
+description: Report a tracker problem or incorrect hideout requirement.
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve the tracker. Reports and attachments are public, so leave out passwords, private account details, and save backups. The maintainer will reply here.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What went wrong?
+      description: Describe the problem. For a material correction, include the station, tier, item, and correct amount.
+      placeholder: Tell us what you saw.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How can we reproduce it?
+      description: List the steps that led to the problem. If it happened only once, tell us what you were doing.
+      placeholder: "1. Open...\n2. Change...\n3. The problem appears..."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+  - type: input
+    id: tracker-version
+    attributes:
+      label: Tracker version and app
+      description: Filled in when you open this form from Feedback. Otherwise, enter the version shown there and whether you use the website or Windows app.
+      placeholder: "Website 1.3.2 or Windows app 1.3.2"
+  - type: input
+    id: device
+    attributes:
+      label: Browser or Windows version
+      placeholder: "For example: Chrome on Windows 11"
+  - type: textarea
+    id: extra-details
+    attributes:
+      label: Screenshots or extra details (optional)
+      description: Attach a screenshot or link to a source for a material correction. Check that screenshots do not show personal information.
