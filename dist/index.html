@@ -5,7 +5,7 @@
   <meta name="theme-color" content="#11150f"><meta name="description" content="Plan Gray Zone Warfare 0.5 hideout upgrades, track your stash, and save a shared material shopping list for each operator.">
   <title>HIDEOUT — GZW Operations Desk</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css">
-  <script src="catalog.js" defer></script><script src="core.js" defer></script><script src="app.js" defer></script><script src="sync.js" defer></script><script src="cloud-config.js" defer></script><script src="cloud.js" defer></script>
+  <script src="catalog.js" defer></script><script src="catalog-update.js" defer></script><script src="core.js" defer></script><script src="app.js" defer></script><script src="sync.js" defer></script><script src="cloud-config.js" defer></script><script src="cloud.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to tracker</a>
@@ -21,7 +21,7 @@
     <div id="notice" class="notice" role="status" hidden></div>
     <section id="desk-view" class="view">
       <div class="desk-grid">
-        <aside class="goal-column"><section class="panel"><div class="panel-title"><h2>Upgrade goals</h2><button data-open-upgrades class="text-button">Edit plan ↗</button></div><div id="goal-list"></div><div class="goal-footer"><span class="dot"></span> Shared stash, counted once.</div></section><section class="budget panel"><label for="cash-input">Cash in stash</label><div class="cash-field"><span>$</span><input id="cash-input" type="number" min="0" max="999999999" step="1" inputmode="numeric"></div><div id="cash-summary"></div></section><button id="undo" class="button secondary undo" disabled>↶ Undo last change</button><p class="small-muted">Progress saves automatically on this device. Use Backups to move between the website, desktop app, or another PC.</p></aside>
+        <aside class="goal-column"><section class="panel"><div class="panel-title"><h2>Upgrade goals</h2><button data-open-upgrades class="text-button">Edit plan ↗</button></div><div id="goal-list"></div><div class="goal-footer"><span class="dot"></span> Shared stash, counted once.</div></section><section class="budget panel"><label for="cash-input">Cash in stash</label><div class="cash-field"><span>$</span><input id="cash-input" type="number" min="0" max="999999999" step="1" inputmode="numeric"></div><div id="cash-summary"></div></section><button id="undo" class="button secondary undo" disabled>↶ Undo last change</button><p class="small-muted">Progress saves automatically. Sign in to sync the website and desktop app, or use Backups to move guest progress.</p></aside>
         <section class="panel supply-panel" aria-label="Shared material list"><div class="list-toolbar"><label class="search"><span aria-hidden="true">⌕</span><input id="desk-search" type="search" placeholder="Find a material…" aria-label="Find a material in your supply list"></label><label class="check-label"><input id="needed-only" type="checkbox" checked>Needed only</label><label class="sr-only" for="desk-sort">Sort supply list</label><select id="desk-sort"><option value="needed">Most needed</option><option value="name">Item name</option></select></div><div id="plan-warning" class="inline-warning" hidden></div><div id="supply-table"></div><div id="item-detail" class="item-detail"></div></section>
       </div>
     </section>

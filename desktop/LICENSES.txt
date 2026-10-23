@@ -1,0 +1,5 @@
+GZW Hideout Tracker is an independent fan-made companion and is not affiliated with MADFINGER Games.
+The game name and underlying game material names belong to their respective owners.
+Item illustrations in this app are original vector artwork created for this tracker; they are not official game artwork.
+The app includes the Electron runtime, whose license and third-party notices are included in the packaged application.
+DM Sans and Barlow Condensed fonts are distributed under the SIL Open Font License 1.1. Their notices are bundled with the font assets.

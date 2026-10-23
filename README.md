@@ -4,9 +4,9 @@
 
 A second-monitor companion for Gray Zone Warfare 0.5, with guest saves and optional GitHub sign-in for private cloud progress. GitHub Pages hosts the public application; Supabase stores account saves. Player progress is never committed to the public repository.
 
-Version 1.2 adds optional cloud saves to the 73 illustrated catalogue entries. The illustrations are original identifying artwork, not official game images. Icons and fonts are bundled locally.
+Version 1.3 shares optional GitHub sign-in and automatic cloud saves between the website and Windows app, and automatically downloads published catalogue corrections. The 73 bundled illustrations are original identifying artwork, not official game images. Icons and fonts are included for offline use.
 
-The separate portable Windows edition runs offline and stores its progress independently. Export from **Backups** here, then import into the desktop app to transfer your operators.
+The portable Windows edition keeps the same local storage folder and origin as version 1.1, preserving existing PC progress. Sign in with the same GitHub account to share account progress. Guest workspaces remain separate; use Backups to copy old guest operators into an existing account save.
 
 ## Using the tracker
 
@@ -22,15 +22,36 @@ The separate portable Windows edition runs offline and stores its progress indep
 
 Sourced 22 October 2026 from GZW Hideout and compared with the launch-day community spreadsheet: **15 stations, 36 listed upgrades, 72 physical materials plus cash**. This is the full currently listed community catalogue, not an official exhaustive game database. The Data & sources view includes links and three unresolved discrepancies. Recipe chains for craftable products are outside this version's scope.
 
-Source data is in `dist/catalog.json`; its browser script is `dist/catalog.js`. Keep them in sync. Ventilation follows the source's explicit level 1 → level 3 chain. Do not generate a fictional level 2.
+Edit `dist/catalog.json` to publish a catalogue correction. `npm run build` validates it, regenerates `dist/catalog.js`, and creates a SHA-256 manifest. The website and desktop check on launch, focus/reconnection, and every five minutes. Updates apply when no form is being edited and are cached for offline use. Invalid/incomplete downloads keep the last working catalogue. Removed identifiers and tiers are retained for compatibility with old progress. Publish new item icons under `dist/assets/items/`; desktop copies download those images as needed with a fallback while offline. Updates contain data only, never executable code. Game patches still require a reviewed catalogue change in this repository. Ventilation follows the source's explicit level 1 → level 3 chain. Do not generate a fictional level 2.
 
 ## Local and account saves
 
 Guest mode works without an account. On first sign-in, a new account can copy the device's progress or start fresh. Existing cloud progress downloads on a new device. Guest and signed-in workspaces stay separate; signing out restores the guest workspace.
 
-Account edits save locally first and retry when connected. If two devices edited the same save independently, sync pauses for a choice and keeps recovery copies. Sign-out attempts to flush pending changes and warns if the draft is still unsynced. Account drafts and recovery copies remain on the device after sign-out. On shared computers, clear this site's data after exporting any needed guest progress.
+Account edits save locally immediately and upload after 850 ms of inactivity. Open, visible devices check for changes every five seconds and when returning to the app. Incoming updates wait while a form is being edited. There is no need to click Sync for routine changes. Offline changes retry automatically. If two devices edited the same save independently, sync pauses for a choice and keeps recovery copies. Sign-out attempts to flush pending changes and warns if the draft is still unsynced. Account drafts and recovery copies remain on the device after sign-out. On shared computers, clear this site's data after exporting any needed guest progress.
 
-The earlier private website, this website, and the Windows app use separate local storage. Export a backup from the old copy and import here to transfer operators.
+The earlier private website, this website, and the Windows app use separate guest storage. Signed-in copies share one cloud save. Export a backup from the old private copy and import here to transfer operators.
+
+## Windows app
+
+From this repository on Windows, with Node.js 24:
+
+```sh
+npm ci
+npm test
+npm run build
+node scripts/prepare-desktop.mjs
+cd desktop
+npm ci
+node --test tests/*.test.cjs
+npm run build
+```
+
+The portable EXE is written to `desktop/release`. The **Build Windows desktop app** GitHub Actions workflow can build a downloadable artifact too. It is not code-signed; publishing a signed installer requires a signing certificate. Catalogue updates do not require a new EXE. Changes to application features or Electron itself still require a new version.
+
+Desktop sign-in uses the system browser with PKCE and a temporary loopback listener bound only to `127.0.0.1:47835`. Add the exact redirect `http://127.0.0.1:47835/auth/callback` to Supabase URL Configuration alongside the website. No wildcard, client secret, custom protocol registration, or administrator privileges are needed. The listener expires after five minutes and closes after one callback. If the port is in use, the app reports it and leaves progress intact.
+
+The renderer is sandboxed with Node integration disabled, context isolation, a restrictive CSP/network allowlist, and a narrow sender-validated preload bridge. Local data stays at `%APPDATA%/GZW Hideout Tracker` with the original `hideout://app` origin. GitHub grants no repository permissions to players signing into the tracker.
 
 ## Run and test
 
