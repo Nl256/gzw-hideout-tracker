@@ -1,72 +1,56 @@
 # GZW Hideout — Operations Desk
 
-[Open the tracker](https://nl256.github.io/gzw-hideout-tracker/)
+Plan your Gray Zone Warfare 0.5 hideout upgrades, track your stash, and see what to bring back from your next supply run. Keep it open on a second monitor while you play.
 
-A second-monitor companion for Gray Zone Warfare 0.5, with guest saves and optional GitHub sign-in for private cloud progress. GitHub Pages hosts the public application; Supabase stores account saves. Player progress is never committed to the public repository.
+[Open the tracker](https://nl256.github.io/gzw-hideout-tracker/) · [Download for Windows](https://github.com/Nl256/gzw-hideout-tracker/releases/latest/download/GZW-Hideout-Tracker-Windows-x64.exe)
 
-Version 1.3 shares optional GitHub sign-in and automatic cloud saves between the website and Windows app, and automatically downloads published catalogue corrections. The 73 bundled illustrations are original identifying artwork, not official game images. Icons and fonts are included for offline use.
+## Get started
 
-The portable Windows edition keeps the same local storage folder and origin as version 1.1, preserving existing PC progress. Sign in with the same GitHub account to share account progress. Guest workspaces remain separate; use Backups to copy old guest operators into an existing account save.
+**In your browser:** open the tracker and start planning. An account is optional.
 
-## Using the tracker
+**On Windows:** download `GZW-Hideout-Tracker-Windows-x64.exe`, then double-click it to open. You need a **64-bit Windows PC**. Everything is included in this one file: no installation, extra software, or administrator rights are needed. You do not need the source-code ZIP or checksum file.
 
-- Set completed station levels in **Hideout upgrades**, then choose target tiers. Changing **Built in game** immediately updates and saves progress without a confirmation popup. It does not spend stash materials; Undo can reverse the change.
-- Enter quantities in **Supply list** or **All materials**. The same stash is shared across your operator's goals.
-- **Personal reserve** adds quantities to keep after building selected upgrades.
-- **Complete** can optionally deduct resources; **Built in game** only synchronizes progress.
-- Operators have independent inventories, cash, and plans. Progress saves in this browser's local storage.
-- Export backups from **Backups**. Imports add new operator copies and preserve existing ones. Local-file, localhost, and hosted origins have separate storage; export/import to transfer between them.
-- Undo covers recent changes in the current session. Clearing browser/site data removes local saves; keep a backup.
+Local saves work offline in the Windows app. Internet access is needed for sign-in, cloud sync, and updated material lists. The app is not code-signed, so Windows may show an unknown-publisher notice.
 
-## Data snapshot
+## Plan your next upgrades
 
-Sourced 22 October 2026 from GZW Hideout and compared with the launch-day community spreadsheet: **15 stations, 36 listed upgrades, 72 physical materials plus cash**. This is the full currently listed community catalogue, not an official exhaustive game database. The Data & sources view includes links and three unresolved discrepancies. Recipe chains for craftable products are outside this version's scope.
+1. Open **Hideout upgrades** and set **Built in game** to the levels you have already completed.
+2. Choose the target tiers you want to work toward.
+3. Enter the materials you own in **Supply list** or **All materials**, and add your cash in stash.
+4. Use the shared supply list to see what you still need. Materials shared by several upgrades are counted together.
 
-Edit `dist/catalog.json` to publish a catalogue correction. `npm run build` validates it, regenerates `dist/catalog.js`, and creates a SHA-256 manifest. The website and desktop check on launch, focus/reconnection, and every five minutes. Updates apply when no form is being edited and are cached for offline use. Invalid/incomplete downloads keep the last working catalogue. Removed identifiers and tiers are retained for compatibility with old progress. Publish new item icons under `dist/assets/items/`; desktop copies download those images as needed with a fallback while offline. Updates contain data only, never executable code. Game patches still require a reviewed catalogue change in this repository. Ventilation follows the source's explicit level 1 → level 3 chain. Do not generate a fictional level 2.
+Changes save automatically. Updating **Built in game** takes effect immediately without an Update progress popup and leaves your stash quantities alone. Use **Complete upgrade** when you want the option to deduct the materials you used.
 
-## Local and account saves
+**Personal reserve** lets you set aside extra stock. You can also create separate operators, each with their own stash, cash, and upgrade goals. **Undo** reverses recent changes during your current session.
 
-Guest mode works without an account. On first sign-in, a new account can copy the device's progress or start fresh. Existing cloud progress downloads on a new device. Guest and signed-in workspaces stay separate; signing out restores the guest workspace.
+## Save your progress
 
-Account edits save locally immediately and upload after 850 ms of inactivity. Open, visible devices check for changes every five seconds and when returning to the app. Incoming updates wait while a form is being edited. There is no need to click Sync for routine changes. Offline changes retry automatically. If two devices edited the same save independently, sync pauses for a choice and keeps recovery copies. Sign-out attempts to flush pending changes and warns if the draft is still unsynced. Account drafts and recovery copies remain on the device after sign-out. On shared computers, clear this site's data after exporting any needed guest progress.
+**Without an account:** your progress saves automatically on the device you're using. Guest saves in different browsers or in the Windows app are separate.
 
-The earlier private website, this website, and the Windows app use separate guest storage. Signed-in copies share one cloud save. Export a backup from the old private copy and import here to transfer operators.
+**With a GitHub account:** choose **Sign in / Cloud → Sign in with GitHub**. Use the same account on the website and Windows app to share your progress. Cloud saves are ready to use; there is nothing to configure.
 
-## Windows app
+Your changes save on the device immediately and sync automatically when connected. Offline changes sync when you reconnect. If you change the same save independently on two devices, the tracker asks which version to use and keeps recovery copies.
 
-1. [Download the latest Windows EXE](https://github.com/Nl256/gzw-hideout-tracker/releases/latest/download/GZW-Hideout-Tracker-Windows-x64.exe), or use **Download for Windows** on the website.
-2. Double-click `GZW-Hideout-Tracker-Windows-x64.exe` to open the tracker.
+On your first sign-in, a new account can copy your device's progress or start fresh. If you already have a cloud save, it loads automatically. Signing out returns you to your guest progress.
 
-You need a **64-bit Windows PC**. Everything the app needs is included in the EXE: no installer, Node.js, Python, extra downloads, or administrator rights are required. Downloading and using guest mode do not require an account. You do not need the source-code ZIP or checksum file to run it.
+## Keep a backup
 
-Local saves work offline. Internet access is needed for GitHub sign-in, cloud sync, and catalogue updates. Sign in with the same GitHub account as the website to share your progress, or stay in guest mode for local-only saves.
+Open **Backups** to export your progress to a file. Importing a backup adds copies of its operators and keeps the existing ones.
 
-Published material and upgrade-list corrections arrive automatically. For new app features, download the latest EXE again; your existing PC progress is kept. [Release notes](https://github.com/Nl256/gzw-hideout-tracker/releases/latest) describe each version.
+Use a backup to move guest progress between devices or bring guest operators into an existing cloud account. Clearing browser data or deleting the app's saved data removes local progress, so keep a backup somewhere safe.
 
-The app is not code-signed, so Windows may show an unknown-publisher notice.
+## Material lists and updates
 
-## Configure optional cloud saves
+The bundled GZW 0.5 list covers **15 stations, 36 listed upgrades, and 72 physical materials plus cash**, with item icons included. It was checked against community sources on **22 October 2026**. Open **Data & sources** for the references and three requirements that still need confirmation. Crafting recipe chains are not included.
 
-This copy uses public connection values for **GZW Hideout Tracker** in **Nl256's Org**, project `iptkvqddczvrxuxqoeil`. The database migration has been applied. A Pages deployment and GitHub provider setup are also required for public sign-in.
+Published material and upgrade-list corrections download automatically without resetting your progress. The Windows app keeps the last downloaded list available offline. Corrections are reviewed before publication; a game patch may arrive before the tracker is updated.
 
-For a separate installation, create a Supabase project, apply `supabase/migrations/202610220001_progress.sql`, and replace the URL and **publishable** key in `dist/cloud-config.js`. Never put a service-role key, database password, secret key, or GitHub client secret in the frontend or repository. For guest-only mode, use `window.HIDEOUT_CLOUD = {};`.
+For new app features, download the latest Windows EXE again. Your existing PC progress is kept. Check the [release notes](https://github.com/Nl256/gzw-hideout-tracker/releases/latest) to see what's changed.
 
-1. In GitHub **Settings → Developer settings → OAuth Apps**, register **GZW Hideout Tracker**, using the published Pages URL as its homepage. Leave Device Flow disabled.
-2. Set the authorization callback to `https://iptkvqddczvrxuxqoeil.supabase.co/auth/v1/callback` (use your own project ref for a separate installation).
-3. Generate a client secret and enter the client ID and secret directly in Supabase **Authentication → Sign In / Providers → GitHub**. Enable GitHub. Keep the secret only in provider settings.
-4. In Supabase **Authentication → URL Configuration**, set Site URL and the allowed redirect to the exact Pages URL, with repository path and trailing slash. Avoid broad redirect wildcards.
-5. Sign in from the live tracker, create a save, and check it on a second device. Sign out to verify the guest save returns.
+## Your privacy
 
-References: [GitHub Pages workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages), [Supabase GitHub sign-in](https://supabase.com/docs/guides/auth/social-sign-in/auth-github).
+Guest progress stays on your device. Cloud saves are linked to your GitHub account and are not visible to other players or posted in this public repository. Sign-in does not give the tracker access to your GitHub repositories or password.
 
-## Save privacy and integrity
+The cloud service stores your account identity and progress, and authorized service administrators can access that data. Signing out leaves local drafts and recovery copies on the device. On a shared computer, clear the tracker's saved site or app data after exporting any progress you want to keep.
 
-The `hideout_progress` table has row-level security. Anonymous users cannot read or write saves. Signed-in users can read only the row matching their authenticated user ID. Direct client table writes are denied.
-
-The `save_hideout_progress` function derives ownership from `auth.uid()`, never a caller-supplied user ID. It checks the expected revision atomically and rejects stale updates. It limits payload size and structure; the client validates catalogue IDs, tiers, profiles, and quantities. This is a companion tracker, not authoritative game state.
-
-Supabase's advisor flags the authenticated `SECURITY DEFINER` function for review. It is intentional here: a restricted function allows revision-checked writes while direct table writes stay disabled. Its search path is empty, objects are qualified, and `PUBLIC` and `anon` cannot execute it. See [Supabase's review guidance](https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable).
-
-Supabase stores identity and progress, and authorized project administrators can administer that data. Saves use access controls, not end-to-end encryption. Sessions are saved in the browser. The frontend does not request repository access or receive GitHub passwords.
-
-Independent fan tool; not affiliated with MADFINGER Games.
+Independent fan tool; not affiliated with MADFINGER Games. Item illustrations are original identifying artwork, not official game images.
