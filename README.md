@@ -10,7 +10,7 @@ The portable Windows edition keeps the same local storage folder and origin as v
 
 ## Using the tracker
 
-- Set completed station levels in **Hideout upgrades**, then choose target tiers.
+- Set completed station levels in **Hideout upgrades**, then choose target tiers. Changing **Built in game** immediately updates and saves progress without a confirmation popup. It does not spend stash materials; Undo can reverse the change.
 - Enter quantities in **Supply list** or **All materials**. The same stash is shared across your operator's goals.
 - **Personal reserve** adds quantities to keep after building selected upgrades.
 - **Complete** can optionally deduct resources; **Built in game** only synchronizes progress.
