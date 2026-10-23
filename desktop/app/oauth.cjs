@@ -3,7 +3,7 @@ const http=require('node:http');
 const ORIGIN='https://iptkvqddczvrxuxqoeil.supabase.co';
 const REDIRECT='http://127.0.0.1:47835/auth/callback';
 function validAuthorize(value){
- try{const u=new URL(value);return u.origin===ORIGIN&&u.pathname==='/auth/v1/authorize'&&!u.username&&!u.password&&u.searchParams.get('provider')==='github'&&u.searchParams.get('redirect_to')===REDIRECT&&u.searchParams.get('code_challenge_method')==='s256'&&/^[A-Za-z0-9_-]{43}$/.test(u.searchParams.get('code_challenge'));}catch{return false;}
+ try{const u=new URL(value),allowed=new Set(['provider','redirect_to','code_challenge','code_challenge_method','skip_http_redirect']);return [...u.searchParams.keys()].every(k=>allowed.has(k)&&u.searchParams.getAll(k).length===1)&&!u.hash&&u.origin===ORIGIN&&u.pathname==='/auth/v1/authorize'&&!u.username&&!u.password&&u.searchParams.get('provider')==='github'&&u.searchParams.get('redirect_to')===REDIRECT&&u.searchParams.get('code_challenge_method')==='s256'&&/^[A-Za-z0-9_-]{43}$/.test(u.searchParams.get('code_challenge'));}catch{return false;}
 }
 function createLogin({onResult,timeoutMs=300000,port=47835}){
  let server=null,timer=null,active=false,boundPort=port;
@@ -12,7 +12,7 @@ function createLogin({onResult,timeoutMs=300000,port=47835}){
   close();
   server=http.createServer((req,res)=>{
    res.setHeader('Cache-Control','no-store');res.setHeader('Referrer-Policy','no-referrer');res.setHeader('Content-Security-Policy',"default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'");
-   const u=new URL(req.url,'http://127.0.0.1:'+boundPort);
+   let u;try{if(req.url.length>4096)throw Error('Long callback');u=new URL(req.url,'http://127.0.0.1:'+boundPort);}catch{res.writeHead(400);res.end();return;}
    if(req.method!=='GET'||req.headers.host!=='127.0.0.1:'+boundPort||u.pathname!=='/auth/callback'||!active){res.writeHead(404);res.end();return;}
    const code=u.searchParams.get('code'),error=u.searchParams.get('error');
    if(!error&&(!code||!/^[A-Za-z0-9_-]{10,2048}$/.test(code))){res.writeHead(400);res.end('Invalid sign-in callback. Return to the tracker and try again.');return;}
