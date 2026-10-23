@@ -47,7 +47,11 @@ node --test tests/*.test.cjs
 npm run build
 ```
 
-The portable EXE is written to `desktop/release`. The **Build Windows desktop app** GitHub Actions workflow can build a downloadable artifact too. It is not code-signed; publishing a signed installer requires a signing certificate. Catalogue updates do not require a new EXE. Changes to application features or Electron itself still require a new version.
+The portable EXE is written to `desktop/release`. It is not code-signed; publishing a signed installer requires a signing certificate. Catalogue updates do not require a new EXE. Changes to application features or Electron itself still require a new version.
+
+Public Windows downloads are hosted in [GitHub Releases](https://github.com/Nl256/gzw-hideout-tracker/releases/latest), so downloading does not require an account. The website uses a stable [latest EXE link](https://github.com/Nl256/gzw-hideout-tracker/releases/latest/download/GZW-Hideout-Tracker-Windows-x64.exe).
+
+To publish a new Windows version, update both package versions and lockfiles, add `releases/vVERSION.md`, and run **Publish Windows desktop app** from Actions on `main`. The workflow runs the tests, builds the portable app, verifies its checksum, and uploads the EXE and SHA-256 file before publishing the release as Latest. Keep the public asset name `GZW-Hideout-Tracker-Windows-x64.exe` unchanged so the website button follows new releases automatically. Existing release versions are not overwritten; use a new version for a new build.
 
 Desktop sign-in uses the system browser with PKCE and a temporary loopback listener bound only to `127.0.0.1:47835`. Add the exact redirect `http://127.0.0.1:47835/auth/callback` to Supabase URL Configuration alongside the website. No wildcard, client secret, custom protocol registration, or administrator privileges are needed. The listener expires after five minutes and closes after one callback. If the port is in use, the app reports it and leaves progress intact.
 

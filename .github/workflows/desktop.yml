@@ -1,17 +1,32 @@
-name: Build Windows desktop app
+name: Publish Windows desktop app
 on:
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: windows-release
+  cancel-in-progress: false
 jobs:
   windows:
+    if: github.ref == 'refs/heads/main'
     runs-on: windows-latest
+    outputs:
+      version: ${{ steps.package.outputs.version }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
           cache: npm
+      - name: Check release version and notes
+        id: package
+        shell: pwsh
+        run: |
+          $version = (Get-Content desktop/package.json -Raw | ConvertFrom-Json).version
+          $webVersion = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          if ($version -notmatch '^\d+\.\d+\.\d+$' -or $version -ne $webVersion) { throw 'Use matching stable web and desktop versions.' }
+          if (!(Test-Path -LiteralPath "releases/v$version.md")) { throw 'Add release notes for this version before publishing.' }
+          "version=$version" >> $env:GITHUB_OUTPUT
       - run: npm ci
       - run: npm test
       - run: npm run build
@@ -22,8 +37,42 @@ jobs:
         working-directory: desktop
       - run: npm run build
         working-directory: desktop
+      - name: Prepare public download and checksum
+        shell: pwsh
+        env:
+          RELEASE_VERSION: ${{ steps.package.outputs.version }}
+        run: |
+          $asset = 'GZW-Hideout-Tracker-Windows-x64.exe'
+          New-Item -ItemType Directory -Path downloads | Out-Null
+          Copy-Item -LiteralPath "desktop/release/GZW-Hideout-Tracker-${env:RELEASE_VERSION}-Windows-x64.exe" -Destination "downloads/$asset"
+          $hash = (Get-FileHash -LiteralPath "downloads/$asset" -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  $asset" | Set-Content -LiteralPath "downloads/$asset.sha256" -Encoding ascii
       - uses: actions/upload-artifact@v4
         with:
           name: GZW-Hideout-Tracker-Windows-x64
-          path: desktop/release/*.exe
+          path: downloads/*
+          if-no-files-found: error
           retention-days: 30
+  publish:
+    needs: windows
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v4
+        with:
+          name: GZW-Hideout-Tracker-Windows-x64
+          path: downloads
+      - name: Verify download
+        working-directory: downloads
+        run: sha256sum --check GZW-Hideout-Tracker-Windows-x64.exe.sha256
+      - name: Publish release after all assets are uploaded
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_VERSION: ${{ needs.windows.outputs.version }}
+          RELEASE_SHA: ${{ github.sha }}
+        run: |
+          gh release create "v$RELEASE_VERSION" downloads/* --target "$RELEASE_SHA" --title "GZW Hideout Tracker $RELEASE_VERSION" --notes-file "releases/v$RELEASE_VERSION.md" --draft
+          gh release edit "v$RELEASE_VERSION" --draft=false --latest
