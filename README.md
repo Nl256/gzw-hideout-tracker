@@ -1,5 +1,7 @@
 # GZW Hideout — Operations Desk
 
+[Open the tracker](https://nl256.github.io/gzw-hideout-tracker/)
+
 A second-monitor companion for Gray Zone Warfare 0.5, with guest saves and optional GitHub sign-in for private cloud progress. GitHub Pages hosts the public application; Supabase stores account saves. Player progress is never committed to the public repository.
 
 Version 1.2 adds optional cloud saves to the 73 illustrated catalogue entries. The illustrations are original identifying artwork, not official game images. Icons and fonts are bundled locally.
