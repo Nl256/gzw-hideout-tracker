@@ -34,52 +34,16 @@ The earlier private website, this website, and the Windows app use separate gues
 
 ## Windows app
 
-From this repository on Windows, with Node.js 24:
+1. [Download the latest Windows EXE](https://github.com/Nl256/gzw-hideout-tracker/releases/latest/download/GZW-Hideout-Tracker-Windows-x64.exe), or use **Download for Windows** on the website.
+2. Double-click `GZW-Hideout-Tracker-Windows-x64.exe` to open the tracker.
 
-```sh
-npm ci
-npm test
-npm run build
-node scripts/prepare-desktop.mjs
-cd desktop
-npm ci
-node --test tests/*.test.cjs
-npm run build
-```
+You need a **64-bit Windows PC**. Everything the app needs is included in the EXE: no installer, Node.js, Python, extra downloads, or administrator rights are required. Downloading and using guest mode do not require an account. You do not need the source-code ZIP or checksum file to run it.
 
-The portable EXE is written to `desktop/release`. It is not code-signed; publishing a signed installer requires a signing certificate. Catalogue updates do not require a new EXE. Changes to application features or Electron itself still require a new version.
+Local saves work offline. Internet access is needed for GitHub sign-in, cloud sync, and catalogue updates. Sign in with the same GitHub account as the website to share your progress, or stay in guest mode for local-only saves.
 
-Public Windows downloads are hosted in [GitHub Releases](https://github.com/Nl256/gzw-hideout-tracker/releases/latest), so downloading does not require an account. The website uses a stable [latest EXE link](https://github.com/Nl256/gzw-hideout-tracker/releases/latest/download/GZW-Hideout-Tracker-Windows-x64.exe).
+Published material and upgrade-list corrections arrive automatically. For new app features, download the latest EXE again; your existing PC progress is kept. [Release notes](https://github.com/Nl256/gzw-hideout-tracker/releases/latest) describe each version.
 
-To publish a new Windows version, update both package versions and lockfiles, add `releases/vVERSION.md`, and run **Publish Windows desktop app** from Actions on `main`. The workflow runs the tests, builds the portable app, verifies its checksum, and uploads the EXE and SHA-256 file before publishing the release as Latest. Keep the public asset name `GZW-Hideout-Tracker-Windows-x64.exe` unchanged so the website button follows new releases automatically. Existing release versions are not overwritten; use a new version for a new build.
-
-Desktop sign-in uses the system browser with PKCE and a temporary loopback listener bound only to `127.0.0.1:47835`. Add the exact redirect `http://127.0.0.1:47835/auth/callback` to Supabase URL Configuration alongside the website. No wildcard, client secret, custom protocol registration, or administrator privileges are needed. The listener expires after five minutes and closes after one callback. If the port is in use, the app reports it and leaves progress intact.
-
-The renderer is sandboxed with Node integration disabled, context isolation, a restrictive CSP/network allowlist, and a narrow sender-validated preload bridge. Local data stays at `%APPDATA%/GZW Hideout Tracker` with the original `hideout://app` origin. GitHub grants no repository permissions to players signing into the tracker.
-
-## Run and test
-
-With Node.js 24:
-
-```sh
-npm ci
-npm test
-npm run build
-python -m http.server 8767 --directory dist
-```
-
-Open `http://localhost:8767`. Serve over HTTP for development; GitHub Pages provides HTTPS in production. The checked-in `dist` folder contains the compiled cloud client and all assets. Only `dist` is published.
-
-Tests cover catalogue integrity, stock arithmetic, profile isolation, backup validation, sync decisions, offline recovery, save conflicts, sign-out flushing, and database ownership/revision enforcement using an isolated PostgreSQL-compatible engine. Real OAuth also requires provider configuration and a live browser sign-in check.
-
-## Publish with GitHub Pages
-
-1. Create a public repository with default branch `main` and commit this folder, including `.github/workflows/pages.yml`.
-2. In repository **Settings → Pages → Build and deployment**, choose **GitHub Actions**.
-3. Run **Test and publish tracker**, or push to `main`. It tests and builds before deploying `dist`.
-4. Use the exact HTTPS URL shown in Pages settings for authentication setup below. Repository subpaths are supported.
-
-Do not commit `node_modules`, personal backup files, `.env` files, passwords, or secrets.
+The app is not code-signed, so Windows may show an unknown-publisher notice.
 
 ## Configure optional cloud saves
 
