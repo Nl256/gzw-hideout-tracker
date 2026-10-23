@@ -5,6 +5,7 @@
  const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const desktop=new URLSearchParams(location.search).get('desktop')==='1';
+ if(desktop&&$('#desktop-download'))$('#desktop-download').hidden=true;
  const bundledIcons=window.HideoutBundledIcons||new Set(D.items.map(i=>i.id));
  const icon=(id,extra='')=>`<img class="item-icon ${extra}" src="${bundledIcons.has(id)?'assets/items/'+esc(id)+'.svg':'https://nl256.github.io/gzw-hideout-tracker/assets/items/'+esc(id)+'.svg'}" width="48" height="48" alt="" decoding="async">`;
  const fmt=n=>Number(n||0).toLocaleString('en-US'),money=n=>'$'+fmt(n);
