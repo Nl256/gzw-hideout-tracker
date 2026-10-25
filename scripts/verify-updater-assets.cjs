@@ -1,0 +1,11 @@
+const fs=require('node:fs'),path=require('node:path'),{createHash}=require('node:crypto');
+const yaml=require('../desktop/node_modules/js-yaml');
+const directory=path.resolve(process.argv[2]||'desktop/release');
+const metadata=yaml.load(fs.readFileSync(path.join(directory,'latest.yml'),'utf8'));
+const version=require('../desktop/package.json').version;
+const asset='GZW-Hideout-Tracker-Windows-x64.exe';
+if(metadata.version!==version||metadata.path!==asset||metadata.files?.length!==1||metadata.files[0].url!==asset)throw Error('Unexpected update metadata.');
+const bytes=fs.readFileSync(path.join(directory,asset));
+const digest=createHash('sha512').update(bytes).digest('base64');
+if(metadata.sha512!==digest||metadata.files[0].sha512!==digest||metadata.files[0].size!==bytes.length)throw Error('Installer and update metadata do not match.');
+console.log(`Verified Windows ${version} installer and updater SHA-512 metadata.`);

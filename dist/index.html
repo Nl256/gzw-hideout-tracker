@@ -4,9 +4,10 @@
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#11150f"><meta name="description" content="Plan Gray Zone Warfare 0.5 hideout upgrades, track your stash, and save a shared material shopping list for each operator.">
   <title>HIDEOUT — GZW Operations Desk</title>
-  <meta name="application-version" content="1.3.4">
-  <link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css?v=7ce652efcfe223a8">
+  <meta name="application-version" content="1.4.0">
+  <link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css?v=65f1c2bee7e6afc9">
   <script src="catalog.js?v=ea8e6d67a82eb8b1" defer></script><script src="catalog-update.js?v=e62abf61f220ace3" defer></script><script src="core.js?v=2d834b63ef73886b" defer></script><script src="app.js?v=50364ffea3fe5578" defer></script><script src="sync.js?v=b9ed832e943c55f4" defer></script><script src="cloud-config.js?v=d6690714aec821d9" defer></script><script src="cloud.js?v=03b556a28eb5dd0b" defer></script>
+  <script src="desktop-update.js?v=1527e1871cbb3944" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to tracker</a>
@@ -17,9 +18,13 @@
   </header>
   <main id="main" class="main">
     <div class="page-heading"><div><p class="eyebrow">OPERATIONS DESK <span>/</span> <span id="operator-caption"></span></p><h1>Your next supply run.</h1><p class="lead">Your upgrades. Your stash. One shared shopping list.</p></div><div class="headline-stats"><div><strong id="units-needed">—</strong><span>items to collect</span></div><div><strong id="goals-count">—</strong><span>upgrade goals</span></div><div><strong id="built-count">—</strong><span>tiers built</span></div></div></div>
-    <aside id="desktop-download" class="desktop-download" aria-label="Windows app"><div><strong>Your operations desk, on your desktop.</strong><p>Windows 64-bit · One EXE · No extra software or installation needed</p><p>Download, then double-click to open. Local saves work offline; cloud sync is optional.</p></div><div class="download-actions"><a class="button" href="https://github.com/Nl256/gzw-hideout-tracker/releases/latest/download/GZW-Hideout-Tracker-Windows-x64.exe"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg>Download for Windows</a><a class="release-notes" href="https://github.com/Nl256/gzw-hideout-tracker/releases/latest" target="_blank" rel="noopener noreferrer">Release notes ↗</a></div></aside>
+    <aside id="desktop-download" class="desktop-download" aria-label="Windows app"><div><strong>Your operations desk, on your desktop.</strong><p>Windows 64-bit · Install once · Updates inside the app</p><p>Run the installer once. No extra software or administrator rights needed. Existing PC saves are kept.</p></div><div class="download-actions"><a class="button" href="https://github.com/Nl256/gzw-hideout-tracker/releases/latest/download/GZW-Hideout-Tracker-Windows-x64.exe"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg>Download for Windows</a><a class="release-notes" href="https://github.com/Nl256/gzw-hideout-tracker/releases/latest" target="_blank" rel="noopener noreferrer">Release notes ↗</a></div></aside>
     <nav class="view-tabs" aria-label="Tracker views"><button data-view="desk" aria-current="page">Supply list</button><button data-view="upgrades">Hideout upgrades <span id="station-count"></span></button><button data-view="inventory">All materials <span id="item-count"></span></button><button data-view="sources">Data & sources</button><button data-view="feedback">Feedback</button></nav>
     <div class="cloud-strip" aria-live="polite"><span id="cloud-mode">GUEST MODE</span><span id="cloud-status">Progress stays in this browser. Sign-in is optional.</span><button id="cloud-action" class="text-button">Cloud saves ↗</button></div><div id="cloud-alert" class="notice warning" hidden></div><div id="storage-warning" class="notice warning" hidden></div>
+    <aside id="desktop-update" class="desktop-update panel" aria-label="App update" hidden>
+      <div class="desktop-update-info" aria-live="polite"><strong id="desktop-update-title"></strong><p id="desktop-update-copy"></p><progress id="desktop-update-progress" max="100" value="0" aria-label="App update download progress" hidden></progress></div>
+      <div class="download-actions"><button id="desktop-update-action" class="button">Update now</button><button id="desktop-update-later" class="button secondary">Later</button><a class="release-notes" href="https://github.com/Nl256/gzw-hideout-tracker/releases/latest" target="_blank" rel="noopener noreferrer">What’s new ↗</a></div>
+    </aside>
     <div id="notice" class="notice" role="status" hidden></div>
     <section id="desk-view" class="view">
       <div class="desk-grid">
@@ -39,7 +44,7 @@
       </div>
       <div class="feedback-details"><p><strong>Continues on GitHub.</strong> A free GitHub account is needed to post or reply. Everyone can browse the feedback.</p><p>Posts and attachments are public. Keep passwords, account details, and save backups out of reports. The tracker only fills in its version, app type, and catalogue date; it does not attach your progress.</p><p>You can review your report before submitting it. The maintainer can reply on the same page, and you can return there to follow the conversation.</p></div>
     </section>
-    <footer class="footer"><span>Independent fan tool · Not affiliated with MADFINGER Games</span><button data-view="sources" id="data-caption" class="text-button">Checking catalogue…</button></footer>
+    <footer class="footer"><span id="desktop-app-version" hidden></span><button id="desktop-check-updates" class="text-button" hidden>Check for app updates</button><span>Independent fan tool · Not affiliated with MADFINGER Games</span><button data-view="sources" id="data-caption" class="text-button">Checking catalogue…</button></footer>
   </main>
   <dialog id="account-modal" aria-labelledby="account-title"><div id="account-content"></div></dialog>
   <dialog id="modal"><div id="modal-content"></div></dialog>

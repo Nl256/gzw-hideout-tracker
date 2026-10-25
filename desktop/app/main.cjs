@@ -11,12 +11,16 @@ app.setPath('sessionData',path.join(dataRoot,'browser-data'));
 app.setName('GZW Hideout Tracker');
 protocol.registerSchemesAsPrivileged([{scheme:'hideout',privileges:{standard:true,secure:true,supportFetchAPI:true,corsEnabled:true}}]);
 let mainWindow;
+let updates;
 const {createLogin,validAuthorize,ORIGIN}=require('./oauth.cjs');
 const login=createLogin({onResult:result=>{if(mainWindow&&!mainWindow.isDestroyed()){mainWindow.webContents.send('hideout:signin-result',result);mainWindow.show();mainWindow.focus();}}});
 function checkSender(event){if(event.sender!==mainWindow?.webContents||event.senderFrame!==mainWindow.webContents.mainFrame||!event.senderFrame.url.startsWith('hideout://app/'))throw Error('Untrusted request');}
 ipcMain.handle('hideout:prepare-signin',event=>{checkSender(event);return login.prepare();});
 ipcMain.handle('hideout:open-signin',async(event,url)=>{checkSender(event);if(!login.isActive()||!validAuthorize(url))throw Error('Invalid sign-in request');await shell.openExternal(url);});
 ipcMain.handle('hideout:cancel-signin',event=>{checkSender(event);login.close();});
+for(const [channel,action]of [['state','snapshot'],['check','check'],['download','download'],['install','install'],['later','later']]){
+ ipcMain.handle('hideout:update-'+channel,event=>{checkSender(event);return updates?updates[action](action==='check'):({status:'current',currentVersion:app.getVersion(),message:'Updates are available in the installed Windows app.'});});
+}
 app.on('before-quit',()=>login.close());
 
 function external(url){try{const parsed=new URL(url);if(parsed.protocol==='https:')shell.openExternal(parsed.href);}catch{}}
@@ -36,6 +40,21 @@ if(!single){app.quit();}else{
   });
   session.defaultSession.setPermissionRequestHandler((_webContents,_permission,callback)=>callback(false));
   session.defaultSession.setPermissionCheckHandler(()=>false);
+  if(app.isPackaged&&process.platform==='win32'&&!qa){
+   const {autoUpdater}=require('electron-updater');
+   const {createUpdates,allowedUpdateUrl}=require('./updates.cjs');
+   autoUpdater.logger=null;
+   autoUpdater.netSession.setPermissionRequestHandler((_contents,_permission,callback)=>callback(false));
+   autoUpdater.netSession.setPermissionCheckHandler(()=>false);
+   autoUpdater.netSession.webRequest.onBeforeRequest((details,callback)=>callback({cancel:!allowedUpdateUrl(details.url)}));
+   const preferenceFile=path.join(dataRoot,'app-update-preference.json');
+   updates=createUpdates({updater:autoUpdater,currentVersion:app.getVersion(),
+    onState:state=>{if(mainWindow&&!mainWindow.isDestroyed())mainWindow.webContents.send('hideout:update-status',state);},
+    loadPreference:()=>JSON.parse(fs.readFileSync(preferenceFile,'utf8')),
+    savePreference:value=>{fs.mkdirSync(dataRoot,{recursive:true});fs.writeFileSync(preferenceFile,JSON.stringify(value));},
+    prepareInstall:async()=>{if(login.isActive())throw Error('Sign-in is in progress');await session.defaultSession.flushStorageData();await session.defaultSession.cookies.flushStore();}
+   });
+  }
   session.defaultSession.webRequest.onBeforeRequest((details,callback)=>{let allowed=false;try{const u=new URL(details.url);allowed=(u.protocol==='hideout:'&&u.hostname==='app')||['blob:','data:'].includes(u.protocol)||u.origin===ORIGIN||(u.origin==='https://nl256.github.io'&&u.pathname.startsWith('/gzw-hideout-tracker/'));}catch{}callback({cancel:!allowed});});
   let windowState={width:1440,height:1000};
   const windowFile=path.join(dataRoot,'window.json');
@@ -49,6 +68,12 @@ if(!single){app.quit();}else{
   mainWindow.once('ready-to-show',()=>{if(!qa)mainWindow.show();});
   mainWindow.webContents.on('did-fail-load',(_event,errorCode,description)=>{if(errorCode!==-3&&!qa)dialog.showErrorBox('Unable to open tracker',description);});
   await mainWindow.loadURL('hideout://app/index.html?desktop=1');
+  if(updates){
+   const initialCheck=setTimeout(()=>updates.check(),15000);initialCheck.unref();
+   const repeatCheck=setInterval(()=>updates.check(),60*60*1000);repeatCheck.unref();
+   mainWindow.on('focus',()=>updates.check());
+   app.on('before-quit',()=>{clearTimeout(initialCheck);clearInterval(repeatCheck);});
+  }
   if(qa){
    try{
     if(!qaDir)throw Error('Smoke test needs --qa-dir.');fs.mkdirSync(qaDir,{recursive:true});

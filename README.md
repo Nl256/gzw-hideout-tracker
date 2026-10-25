@@ -8,9 +8,9 @@ Plan your Gray Zone Warfare 0.5 hideout upgrades, track your stash, and see what
 
 **In your browser:** open the tracker and start planning. An account is optional.
 
-**On Windows:** download `GZW-Hideout-Tracker-Windows-x64.exe`, then double-click it to open. You need a **64-bit Windows PC**. Everything is included in this one file: no installation, extra software, or administrator rights are needed. You do not need the source-code ZIP or checksum file.
+**On Windows:** download `GZW-Hideout-Tracker-Windows-x64.exe`, then double-click it to install and open. You need a **64-bit Windows PC**. The installer includes everything and installs only for your Windows account; no extra software or administrator rights are needed. You do not need the source-code ZIP or checksum file.
 
-Local saves work offline in the Windows app. Internet access is needed for sign-in, cloud sync, and updated material lists. The app is not code-signed, so Windows may show an unknown-publisher notice.
+Local saves work offline in the Windows app. Internet access is needed for sign-in, cloud sync, material-list corrections, and app updates. The app is not code-signed, so Windows may show an unknown-publisher notice.
 
 ## Plan your next upgrades
 
@@ -43,11 +43,15 @@ Use a backup to move guest progress between devices or bring guest operators int
 
 The bundled GZW 0.5 list covers **15 stations, 36 listed upgrades, and 72 physical materials plus cash**, with item icons included. It was checked against community sources on **25 October 2026**. Open **Data & sources** for the database, spreadsheet and updated Fandom wiki comparison, including 17 differences in costs, level labels and benefits that still need confirmation. Crafting recipe chains are not included.
 
-The latest review checked all 36 upgrades against the current database and compared the expanded community spreadsheet. No confirmed recipe-cost changes were found. Two additional Electrical Parts differences are now flagged for Laboratory Storage level 2 and Workshop Hardware level 3; the existing quantities are kept until confirmed. [Read the latest data review](research/2026-10-25.md).
+The latest review compared all 36 upgrades with the database, spreadsheet and updated Fandom wiki. No confirmed recipe-cost changes were found; unresolved differences are clearly flagged. [Read the latest data review](research/2026-10-25.md).
 
 Published material and upgrade-list corrections download automatically without resetting your progress. The Windows app keeps the last downloaded list available offline. Corrections are reviewed before publication; a game patch may arrive before the tracker is updated.
 
-For new app features, download the latest Windows EXE again. Your existing PC progress is kept. Check the [release notes](https://github.com/Nl256/gzw-hideout-tracker/releases/latest) to see what's changed.
+The Windows app checks for new app versions when it opens, when you return, and periodically while running. When a new release is ready, choose **Update now** or **Later**. The download happens inside the app. Once it finishes, choose **Restart & update** to install it and reopen the tracker. Choosing Later postpones the prompt for a day; **Check for app updates** at the bottom lets you return to it sooner. There is no account requirement.
+
+**Moving from an older portable EXE:** close the old app, install version 1.4.0 or newer once, then use the new desktop shortcut. Your existing PC progress and sign-in are kept in the same app folder. Older portable versions cannot gain an updater automatically, so avoid reopening the old EXE after switching.
+
+If an update cannot download or verify, keep using the current app and try again later. Local progress stays on this PC, including changes waiting for cloud sync. See the [release notes](https://github.com/Nl256/gzw-hideout-tracker/releases/latest) for what changed.
 
 ## Bugs and suggestions
 

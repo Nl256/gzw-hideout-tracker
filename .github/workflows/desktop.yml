@@ -1,32 +1,55 @@
 name: Publish Windows desktop app
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: [Test and publish tracker]
+    types: [completed]
+    branches: [main]
 permissions:
   contents: read
 concurrency:
   group: windows-release
   cancel-in-progress: false
 jobs:
-  windows:
-    if: github.ref == 'refs/heads/main'
-    runs-on: windows-latest
+  prepare:
+    if: >-
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_repository.full_name == github.repository &&
+       github.event.workflow_run.head_branch == 'main' &&
+       (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch'))
+    runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.package.outputs.version }}
+      publish: ${{ steps.package.outputs.publish }}
+      commit: ${{ steps.commit.outputs.sha }}
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Record the tested commit
+        id: commit
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Check release version and notes
+        id: package
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/prepare-windows-release.mjs
+  windows:
+    needs: prepare
+    if: needs.prepare.outputs.publish == 'true'
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.prepare.outputs.commit }}
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
           cache: npm
-      - name: Check release version and notes
-        id: package
-        shell: pwsh
-        run: |
-          $version = (Get-Content desktop/package.json -Raw | ConvertFrom-Json).version
-          $webVersion = (Get-Content package.json -Raw | ConvertFrom-Json).version
-          if ($version -notmatch '^\d+\.\d+\.\d+$' -or $version -ne $webVersion) { throw 'Use matching stable web and desktop versions.' }
-          if (!(Test-Path -LiteralPath "releases/v$version.md")) { throw 'Add release notes for this version before publishing.' }
-          "version=$version" >> $env:GITHUB_OUTPUT
       - run: npm ci
       - run: npm test
       - run: npm run build
@@ -37,14 +60,17 @@ jobs:
         working-directory: desktop
       - run: npm run build
         working-directory: desktop
-      - name: Prepare public download and checksum
+      - run: node scripts/verify-updater-assets.cjs
+      - name: Test installation, internal update and saved progress
+        run: node scripts/test-installed-update.cjs
+      - name: Prepare installer, update feed and checksum
         shell: pwsh
-        env:
-          RELEASE_VERSION: ${{ steps.package.outputs.version }}
         run: |
           $asset = 'GZW-Hideout-Tracker-Windows-x64.exe'
           New-Item -ItemType Directory -Path downloads | Out-Null
-          Copy-Item -LiteralPath "desktop/release/GZW-Hideout-Tracker-${env:RELEASE_VERSION}-Windows-x64.exe" -Destination "downloads/$asset"
+          Copy-Item -LiteralPath "desktop/release/$asset" -Destination "downloads/$asset"
+          Copy-Item -LiteralPath "desktop/release/$asset.blockmap" -Destination "downloads/$asset.blockmap"
+          Copy-Item -LiteralPath 'desktop/release/latest.yml' -Destination 'downloads/latest.yml'
           $hash = (Get-FileHash -LiteralPath "downloads/$asset" -Algorithm SHA256).Hash.ToLowerInvariant()
           "$hash  $asset" | Set-Content -LiteralPath "downloads/$asset.sha256" -Encoding ascii
       - uses: actions/upload-artifact@v4
@@ -54,12 +80,14 @@ jobs:
           if-no-files-found: error
           retention-days: 30
   publish:
-    needs: windows
+    needs: [prepare, windows]
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.prepare.outputs.commit }}
       - uses: actions/download-artifact@v4
         with:
           name: GZW-Hideout-Tracker-Windows-x64
@@ -67,12 +95,12 @@ jobs:
       - name: Verify download
         working-directory: downloads
         run: sha256sum --check GZW-Hideout-Tracker-Windows-x64.exe.sha256
-      - name: Publish release after all assets are uploaded
+      - name: Publish release after installer and update feed are uploaded
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-          RELEASE_VERSION: ${{ needs.windows.outputs.version }}
-          RELEASE_SHA: ${{ github.sha }}
+          RELEASE_VERSION: ${{ needs.prepare.outputs.version }}
+          RELEASE_SHA: ${{ needs.prepare.outputs.commit }}
         run: |
           gh release create "v$RELEASE_VERSION" downloads/* --target "$RELEASE_SHA" --title "GZW Hideout Tracker $RELEASE_VERSION" --notes-file "releases/v$RELEASE_VERSION.md" --draft
           gh release edit "v$RELEASE_VERSION" --draft=false --latest
