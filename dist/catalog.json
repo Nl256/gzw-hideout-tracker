@@ -3,14 +3,14 @@
   "game": "Gray Zone Warfare",
   "gameVersion": "0.5.0.1 Rogue Ops",
   "checkedOn": "2026-10-25",
-  "researchStatus": "Rechecked against community recipes and official 0.5.0.1 notes; not independently verified in-game",
+  "researchStatus": "Compared all 36 upgrades across the GZW Hideout database, community spreadsheet and Fandom wiki; not independently verified in-game",
   "catalogueCoverage": {
     "stationCount": 15,
     "upgradeCount": 36,
     "itemCount": 73,
     "physicalMaterialCount": 72,
     "stationMaterialCount": 46,
-    "scope": "Every visible station level and all 73 tracker entries from GZW Hideout as accessed on 2026-10-25. The published community spreadsheet now lists all 15 stations; five differences remain. This does not prove the sources exhaust every in-game item.",
+    "scope": "Every visible station level and all 73 tracker entries from GZW Hideout as accessed on 2026-10-25. Compared all 15 stations and 36 upgrade rows with the community spreadsheet and Fandom wiki. Differences in costs, numbering and benefits are disclosed; this is not an official exhaustive in-game catalogue.",
     "sourceHasSparseLevels": true
   },
   "items": [
@@ -1368,8 +1368,11 @@
       "sourceUrl": "https://gzwhideout.com/laboratory/filtration/2",
       "alternateSourceUrl": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRQRTtotA1PTfVGgtAfh3eJDQLsJaS4YrXRma_ytUNETwNFoCeu-rQslY5JJlTCpJ9xuqaA8v6iujqM/pubhtml?gid=0&single=true",
       "status": "unresolved",
-      "note": "GZW Hideout reports 3 Fine Metal Mesh; community spreadsheet reports 2. Retained database value with visible conflict.",
-      "checkedOn": "2026-10-25"
+      "note": "GZW Hideout and the Fandom wiki list 3 Fine Metal Mesh; the community spreadsheet lists 2. The tracker retains 3. Agreement between community sources is not independent in-game verification.",
+      "checkedOn": "2026-10-25",
+      "sourceLabel": "GZW Hideout database",
+      "alternateSourceLabel": "Community spreadsheet",
+      "corroboratingSourceUrl": "https://gray-zone-warfare.fandom.com/wiki/Hideout"
     },
     {
       "id": "microelectronics-soldering-quantity",
@@ -1381,8 +1384,11 @@
       "sourceUrl": "https://gzwhideout.com/workshop/micro-electronics/2",
       "alternateSourceUrl": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRQRTtotA1PTfVGgtAfh3eJDQLsJaS4YrXRma_ytUNETwNFoCeu-rQslY5JJlTCpJ9xuqaA8v6iujqM/pubhtml?gid=0&single=true",
       "status": "unresolved",
-      "note": "GZW Hideout reports 2 Soldering Iron; community spreadsheet reports 1. Retained database value with visible conflict.",
-      "checkedOn": "2026-10-25"
+      "note": "GZW Hideout and the Fandom wiki list 2 Soldering Iron; the community spreadsheet lists 1. The tracker retains 2 pending in-game confirmation.",
+      "checkedOn": "2026-10-25",
+      "sourceLabel": "GZW Hideout database",
+      "alternateSourceLabel": "Community spreadsheet",
+      "corroboratingSourceUrl": "https://gray-zone-warfare.fandom.com/wiki/Hideout"
     },
     {
       "id": "ventilation-tier-number",
@@ -1394,8 +1400,11 @@
       "sourceUrl": "https://gzwhideout.com/laboratory/ventilation-system/3",
       "alternateSourceUrl": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRQRTtotA1PTfVGgtAfh3eJDQLsJaS4YrXRma_ytUNETwNFoCeu-rQslY5JJlTCpJ9xuqaA8v6iujqM/pubhtml?gid=0&single=true",
       "status": "unresolved",
-      "note": "Database presents Fan at level1 and Ventilation at level3, explicitly requiring level1 first. Community spreadsheet places identical advanced recipe in level2 column. Preserve source numbering and previousLevel1; do not create a fictional level2 recipe.",
-      "checkedOn": "2026-10-25"
+      "note": "The database labels the advanced Ventilation upgrade level 3, directly after level 1. The spreadsheet and Fandom wiki (under Safety) label the same recipe level 2. The tracker retains the database progression and counts this advanced recipe only once.",
+      "checkedOn": "2026-10-25",
+      "sourceLabel": "GZW Hideout database",
+      "alternateSourceLabel": "Community spreadsheet",
+      "corroboratingSourceUrl": "https://gray-zone-warfare.fandom.com/wiki/Hideout"
     },
     {
       "id": "laboratory-storage-electrical-omission",
@@ -1403,12 +1412,15 @@
       "level": 2,
       "field": "items.electrical-parts",
       "selectedValue": 1,
-      "alternateValue": 0,
+      "alternateValue": null,
       "sourceUrl": "https://gzwhideout.com/laboratory/storage-equipment/2",
       "alternateSourceUrl": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRQRTtotA1PTfVGgtAfh3eJDQLsJaS4YrXRma_ytUNETwNFoCeu-rQslY5JJlTCpJ9xuqaA8v6iujqM/pubhtml?gid=0&single=true",
       "status": "unresolved",
       "checkedOn": "2026-10-25",
-      "note": "GZW Hideout lists 1 Electrical Parts for the Beverage Cooler; the community spreadsheet does not list it. An omission is not proof that none are needed. Retained the database quantity pending confirmation."
+      "note": "GZW Hideout and the Fandom wiki list 1 Electrical Parts for the Beverage Cooler; the community spreadsheet omits it. An omission does not establish a zero cost. The tracker retains 1.",
+      "sourceLabel": "GZW Hideout database",
+      "alternateSourceLabel": "Community spreadsheet",
+      "corroboratingSourceUrl": "https://gray-zone-warfare.fandom.com/wiki/Hideout"
     },
     {
       "id": "hardware-electrical-quantity",
@@ -1421,7 +1433,202 @@
       "alternateSourceUrl": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRQRTtotA1PTfVGgtAfh3eJDQLsJaS4YrXRma_ytUNETwNFoCeu-rQslY5JJlTCpJ9xuqaA8v6iujqM/pubhtml?gid=0&single=true",
       "status": "unresolved",
       "checkedOn": "2026-10-25",
-      "note": "GZW Hideout lists 5 Electrical Parts for the Dedicated Server Rack; the community spreadsheet lists 1. Retained the database quantity pending confirmation."
+      "note": "GZW Hideout and the Fandom wiki list 5 Electrical Parts for the Dedicated Server Rack; the community spreadsheet lists 1. The tracker retains 5 pending in-game confirmation.",
+      "sourceLabel": "GZW Hideout database",
+      "alternateSourceLabel": "Community spreadsheet",
+      "corroboratingSourceUrl": "https://gray-zone-warfare.fandom.com/wiki/Hideout"
+    },
+    {
+      "id": "fandom-laboratory-heat-source-3",
+      "stationId": "laboratory-heat-source",
+      "level": 3,
+      "field": "level",
+      "selectedValue": 3,
+      "alternateValue": 2,
+      "sourceUrl": "https://gzwhideout.com/laboratory/heat-source/3",
+      "sourceLabel": "GZW Hideout database",
+      "alternateSourceUrl": "https://gray-zone-warfare.fandom.com/wiki/Hideout",
+      "alternateSourceLabel": "Fandom hideout wiki",
+      "status": "unresolved",
+      "checkedOn": "2026-10-25",
+      "note": "The wiki repeats level 2 for its third Heat Source row. Its materials and $40,000 cost match this level 3 upgrade. The database and spreadsheet use level 3; the tracker retains that numbering."
+    },
+    {
+      "id": "fandom-laboratory-analysis-1",
+      "stationId": "laboratory-analysis",
+      "level": 1,
+      "field": "items.complex-glass-electrode",
+      "selectedValue": 1,
+      "alternateValue": null,
+      "sourceUrl": "https://gzwhideout.com/laboratory/analysis/1",
+      "sourceLabel": "GZW Hideout database",
+      "alternateSourceUrl": "https://gray-zone-warfare.fandom.com/wiki/Hideout",
+      "alternateSourceLabel": "Fandom hideout wiki",
+      "status": "unresolved",
+      "checkedOn": "2026-10-25",
+      "note": "The database and community spreadsheet include 1 Complex Glass Electrode; the wiki does not list it. An omission does not establish a zero cost. The tracker retains 1 pending in-game confirmation."
+    },
+    {
+      "id": "fandom-laboratory-storage-equipment-1",
+      "stationId": "laboratory-storage-equipment",
+      "level": 1,
+      "field": "provides",
+      "selectedValue": "Storage Capacity +1",
+      "alternateValue": "+ 2 Storage Capacity",
+      "sourceUrl": "https://gzwhideout.com/laboratory/storage-equipment/1",
+      "sourceLabel": "GZW Hideout database",
+      "alternateSourceUrl": "https://gray-zone-warfare.fandom.com/wiki/Hideout",
+      "alternateSourceLabel": "Fandom hideout wiki",
+      "status": "unresolved",
+      "checkedOn": "2026-10-25",
+      "note": "The database reports +1 Laboratory Storage Capacity; the wiki reports +2. The tracker retains +1. This affects the displayed benefit, not the material shopping list."
+    },
+    {
+      "id": "fandom-laboratory-storage-equipment-2",
+      "stationId": "laboratory-storage-equipment",
+      "level": 2,
+      "field": "provides",
+      "selectedValue": "Storage Capacity +3",
+      "alternateValue": "+ 2 Storage Capacity",
+      "sourceUrl": "https://gzwhideout.com/laboratory/storage-equipment/2",
+      "sourceLabel": "GZW Hideout database",
+      "alternateSourceUrl": "https://gray-zone-warfare.fandom.com/wiki/Hideout",
+      "alternateSourceLabel": "Fandom hideout wiki",
+      "status": "unresolved",
+      "checkedOn": "2026-10-25",
+      "note": "The database reports +3 Laboratory Storage Capacity; the wiki reports +2. The tracker retains +3. This is separate from the Electrical Parts omission in the spreadsheet."
+    },
+    {
+      "id": "fandom-laboratory-ventilation-system-1",
+      "stationId": "laboratory-ventilation-system",
+      "level": 1,
+      "field": "items",
+      "selectedValue": {
+        "items.electrical-parts": 2,
+        "items.mechanical-parts": null
+      },
+      "alternateValue": {
+        "items.electrical-parts": null,
+        "items.mechanical-parts": 2
+      },
+      "sourceUrl": "https://gzwhideout.com/laboratory/ventilation-system/1",
+      "sourceLabel": "GZW Hideout database",
+      "alternateSourceUrl": "https://gray-zone-warfare.fandom.com/wiki/Hideout",
+      "alternateSourceLabel": "Fandom hideout wiki",
+      "status": "unresolved",
+      "checkedOn": "2026-10-25",
+      "note": "The wiki calls this station Safety and lists 2 Mechanical Parts. The database and spreadsheet list 2 Electrical Parts instead. Both list 2 Plastics and 2 PC Fan. The tracker retains Electrical Parts pending in-game confirmation."
+    },
+    {
+      "id": "fandom-workshop-hardware-2",
+      "stationId": "workshop-hardware",
+      "level": 2,
+      "field": "items.ram",
+      "selectedValue": 3,
+      "alternateValue": 1,
+      "sourceUrl": "https://gzwhideout.com/workshop/hardware/2",
+      "sourceLabel": "GZW Hideout database",
+      "alternateSourceUrl": "https://gray-zone-warfare.fandom.com/wiki/Hideout",
+      "alternateSourceLabel": "Fandom hideout wiki",
+      "status": "unresolved",
+      "checkedOn": "2026-10-25",
+      "note": "The database and community spreadsheet list 3 RAM; the wiki lists 1. The tracker retains 3 RAM pending in-game confirmation."
+    },
+    {
+      "id": "fandom-workshop-micro-electronics-3",
+      "stationId": "workshop-micro-electronics",
+      "level": 3,
+      "field": "items.oscilloscope",
+      "selectedValue": 1,
+      "alternateValue": null,
+      "sourceUrl": "https://gzwhideout.com/workshop/micro-electronics/3",
+      "sourceLabel": "GZW Hideout database",
+      "alternateSourceUrl": "https://gray-zone-warfare.fandom.com/wiki/Hideout",
+      "alternateSourceLabel": "Fandom hideout wiki",
+      "status": "unresolved",
+      "checkedOn": "2026-10-25",
+      "note": "The database and community spreadsheet include 1 Oscilloscope; the wiki does not list it. An omission does not establish a zero cost. The tracker retains 1 pending in-game confirmation."
+    },
+    {
+      "id": "fandom-workshop-machine-tools-2",
+      "stationId": "workshop-machine-tools",
+      "level": 2,
+      "field": "items.mechanical-parts",
+      "selectedValue": 2,
+      "alternateValue": null,
+      "sourceUrl": "https://gzwhideout.com/workshop/machine-tools/2",
+      "sourceLabel": "GZW Hideout database",
+      "alternateSourceUrl": "https://gray-zone-warfare.fandom.com/wiki/Hideout",
+      "alternateSourceLabel": "Fandom hideout wiki",
+      "status": "unresolved",
+      "checkedOn": "2026-10-25",
+      "note": "The database and community spreadsheet include 2 Mechanical Parts; the wiki does not list them. An omission does not establish a zero cost. The tracker retains 2 pending in-game confirmation."
+    },
+    {
+      "id": "fandom-workshop-storage-equipment-1",
+      "stationId": "workshop-storage-equipment",
+      "level": 1,
+      "field": "provides",
+      "selectedValue": "Storage Capacity +1",
+      "alternateValue": "+ 2 Storage Capacity",
+      "sourceUrl": "https://gzwhideout.com/workshop/storage-equipment/1",
+      "sourceLabel": "GZW Hideout database",
+      "alternateSourceUrl": "https://gray-zone-warfare.fandom.com/wiki/Hideout",
+      "alternateSourceLabel": "Fandom hideout wiki",
+      "status": "unresolved",
+      "checkedOn": "2026-10-25",
+      "note": "The database reports +1 Workshop Storage Capacity; the wiki reports +2. The tracker retains +1. This affects the displayed benefit, not the material shopping list."
+    },
+    {
+      "id": "fandom-workshop-storage-equipment-2",
+      "stationId": "workshop-storage-equipment",
+      "level": 2,
+      "field": "provides",
+      "selectedValue": "Storage Capacity +3",
+      "alternateValue": "+ 2 Storage Capacity",
+      "sourceUrl": "https://gzwhideout.com/workshop/storage-equipment/2",
+      "sourceLabel": "GZW Hideout database",
+      "alternateSourceUrl": "https://gray-zone-warfare.fandom.com/wiki/Hideout",
+      "alternateSourceLabel": "Fandom hideout wiki",
+      "status": "unresolved",
+      "checkedOn": "2026-10-25",
+      "note": "The database reports +3 Workshop Storage Capacity; the wiki reports +2. The tracker retains +3. This affects the displayed benefit, not the material shopping list."
+    },
+    {
+      "id": "fandom-workshop-storage-equipment-3",
+      "stationId": "workshop-storage-equipment",
+      "level": 3,
+      "field": "money",
+      "selectedValue": 30000,
+      "alternateValue": 45000,
+      "sourceUrl": "https://gzwhideout.com/workshop/storage-equipment/3",
+      "sourceLabel": "GZW Hideout database",
+      "alternateSourceUrl": "https://gray-zone-warfare.fandom.com/wiki/Hideout",
+      "alternateSourceLabel": "Fandom hideout wiki",
+      "status": "unresolved",
+      "checkedOn": "2026-10-25",
+      "note": "The database and community spreadsheet report $30,000; the wiki reports $45,000. The listed materials agree. The tracker retains $30,000 pending in-game confirmation."
+    },
+    {
+      "id": "fandom-utility-room-generator-2",
+      "stationId": "utility-room-generator",
+      "level": 2,
+      "field": "items",
+      "selectedValue": {
+        "items.electrical-parts": 2,
+        "items.plumbing-parts": 2
+      },
+      "alternateValue": {
+        "items.electrical-parts": 1,
+        "items.plumbing-parts": 1
+      },
+      "sourceUrl": "https://gzwhideout.com/utility-room/generator/2",
+      "sourceLabel": "GZW Hideout database",
+      "alternateSourceUrl": "https://gray-zone-warfare.fandom.com/wiki/Hideout",
+      "alternateSourceLabel": "Fandom hideout wiki",
+      "status": "unresolved",
+      "checkedOn": "2026-10-25",
+      "note": "The database and community spreadsheet list 2 Electrical Parts and 2 Plumbing Parts; the wiki lists 1 of each. The tracker retains 2 of each pending in-game confirmation."
     }
   ],
   "sources": [
@@ -1451,7 +1658,7 @@
       "url": "https://www.reddit.com/r/GrayZoneWarfare/comments/1xcb4az/list_of_materials_for_the_hideout_lets/",
       "checkedOn": "2026-10-25",
       "type": "community-report",
-      "scope": "Original player reports behind the spreadsheet, including later-tier additions. Does not independently resolve the five flagged differences.",
+      "scope": "Original player reports behind the spreadsheet, including later-tier additions. Does not independently resolve the flagged source differences.",
       "confidence": "partial"
     },
     {
@@ -1487,8 +1694,17 @@
       "url": "https://github.com/Nl256/gzw-hideout-tracker/blob/main/research/2026-10-25.md",
       "checkedOn": "2026-10-25",
       "type": "tracker-review",
-      "scope": "No confirmed recipe changes. Rechecked 15 stations, 36 upgrades, and 73 entries; added two warnings for a total of five. Saved progress and the selected build totals are unchanged.",
+      "scope": "Three-source comparison of all 36 upgrades. Documents 17 flagged differences, including wiki omissions and storage benefits. Selected recipe costs and saved progress are unchanged.",
       "confidence": "reviewed-community-data"
+    },
+    {
+      "id": "fandom-hideout",
+      "name": "Gray Zone Warfare Wiki: Hideout",
+      "url": "https://gray-zone-warfare.fandom.com/wiki/Hideout",
+      "checkedOn": "2026-10-25",
+      "type": "community-wiki",
+      "confidence": "partial",
+      "scope": "All 15 station tabs and 36 upgrade rows compared. Four disputed costs agree with the database; other material, cash, level and storage-benefit differences remain. Some functions are placeholders. The history records a 25 October typo edit and 24 October station additions. Disassembly recipes are described separately on the wiki and are not part of tracker build totals."
     }
   ],
   "notes": [
@@ -1499,10 +1715,11 @@
     "Listed required resources are material requirements; the source provides no separate reusable-tool designation. Do not assert tools are reusable.",
     "Capabilities labeled +N are source-reported increments. Model accumulated prior levels if computing capability totals; storage capacity is room-specific, power is shared.",
     "Source exposes 19 Laboratory upgrades, 15 Electronics Workshop upgrades and 2 Generator upgrades. Many stations have two levels. Do not fabricate a third level for every station.",
-    "Ventilation's second available upgrade is labeled level3 on the primary community source; keep previousLevel1 and disclose conflict with the spreadsheet.",
+    "Ventilation's second available upgrade is labeled level3 on the primary community source; keep previousLevel1 and disclose conflict with the spreadsheet and Fandom wiki.",
     "US Dollars is separated into each recipe's money field. If retaining it in the item catalogue, label currency distinctly in UI.",
     "Crafting/production ingredient catalogue is included, but their output recipes and unlocks were not extracted; do not imply these recipes are included.",
-    "Accuracy overrides unsupported completeness claims: describe as the complete currently listed community catalogue with 3 unresolved source conflicts, rather than official complete 0.5 data."
+    "Fandom calls Ventilation System Safety. Missing ingredients and placeholder +x functions are unknown, not zero. See conflicts for the seven recipe-cost differences, repeated Heat Source label, advanced Ventilation numbering, and four storage-capacity differences.",
+    "There are 17 flagged source differences. Community-source agreement is corroboration, not independent in-game verification. Do not describe this as official complete 0.5 data."
   ],
-  "reviewSummary": "Rechecked all 36 listed upgrades and 73 item entries on 25 October 2026. The database recipes, cash costs, and prerequisites match the previous catalogue. The updated community spreadsheet reveals two more differences, bringing the total to five. Existing quantities are retained pending confirmation."
+  "reviewSummary": "Compared all 15 stations and 36 upgrades with the updated Fandom wiki on 25 October 2026. It supports four selected quantities disputed by the spreadsheet, but adds 12 warnings about materials, cash, numbering and storage benefits: 17 flagged differences in total. The wiki history shows today’s edit as a typo; station tables were added on 24 October. Selected recipes remain unchanged pending in-game confirmation."
 }

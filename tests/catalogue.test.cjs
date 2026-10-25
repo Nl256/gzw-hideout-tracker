@@ -10,6 +10,7 @@ test('a published recipe correction changes shopping totals without changing pro
 test('removed catalogue IDs and tiers remain readable in existing backups',()=>{
  const next=clone(D),state=C.newState('one');state.profiles[0].built['laboratory-heat-source']=3;state.profiles[0].stash.wood=7;
  next.stations[0].levels.pop();next.items=next.items.filter(i=>i.id!=='wood');
+ next.conflicts=next.conflicts.filter(c=>next.stations.find(s=>s.id===c.stationId)?.levels.some(t=>t.level===c.level));
  for(const s of next.stations)for(const t of s.levels)delete t.items.wood;
  const merged=compatible(D,next);assert.equal(C.validateImport(state,merged).profiles[0].built['laboratory-heat-source'],3);assert.equal(merged.items.find(i=>i.id==='wood').legacy,true);
 });

@@ -41,7 +41,7 @@ Use a backup to move guest progress between devices or bring guest operators int
 
 ## Material lists and updates
 
-The bundled GZW 0.5 list covers **15 stations, 36 listed upgrades, and 72 physical materials plus cash**, with item icons included. It was checked against community sources on **25 October 2026**. Open **Data & sources** for the references and five source differences that still need confirmation. Crafting recipe chains are not included.
+The bundled GZW 0.5 list covers **15 stations, 36 listed upgrades, and 72 physical materials plus cash**, with item icons included. It was checked against community sources on **25 October 2026**. Open **Data & sources** for the database, spreadsheet and updated Fandom wiki comparison, including 17 differences in costs, level labels and benefits that still need confirmation. Crafting recipe chains are not included.
 
 The latest review checked all 36 upgrades against the current database and compared the expanded community spreadsheet. No confirmed recipe-cost changes were found. Two additional Electrical Parts differences are now flagged for Laboratory Storage level 2 and Workshop Hardware level 3; the existing quantities are kept until confirmed. [Read the latest data review](research/2026-10-25.md).
 
