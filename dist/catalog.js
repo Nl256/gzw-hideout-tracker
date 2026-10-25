@@ -1,16 +1,16 @@
 window.HIDEOUT_DATA = {
   "schemaVersion": 1,
   "game": "Gray Zone Warfare",
-  "gameVersion": "0.5 Rogue Ops",
-  "checkedOn": "2026-10-22",
-  "researchStatus": "Community-sourced snapshot; not independently verified in-game",
+  "gameVersion": "0.5.0.1 Rogue Ops",
+  "checkedOn": "2026-10-25",
+  "researchStatus": "Rechecked against community recipes and official 0.5.0.1 notes; not independently verified in-game",
   "catalogueCoverage": {
     "stationCount": 15,
     "upgradeCount": 36,
     "itemCount": 73,
     "physicalMaterialCount": 72,
     "stationMaterialCount": 46,
-    "scope": "Every visible station level and all 73 tracker entries from GZW Hideout as accessed on 2026-10-22. Does not prove the source itself exhausts every game item.",
+    "scope": "Every visible station level and all 73 tracker entries from GZW Hideout as accessed on 2026-10-25. The published community spreadsheet now lists all 15 stations; five differences remain. This does not prove the sources exhaust every in-game item.",
     "sourceHasSparseLevels": true
   },
   "items": [
@@ -1368,7 +1368,8 @@ window.HIDEOUT_DATA = {
       "sourceUrl": "https://gzwhideout.com/laboratory/filtration/2",
       "alternateSourceUrl": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRQRTtotA1PTfVGgtAfh3eJDQLsJaS4YrXRma_ytUNETwNFoCeu-rQslY5JJlTCpJ9xuqaA8v6iujqM/pubhtml?gid=0&single=true",
       "status": "unresolved",
-      "note": "GZW Hideout reports 3 Fine Metal Mesh; launch-day community sheet reports 2. Retained database value with visible conflict."
+      "note": "GZW Hideout reports 3 Fine Metal Mesh; community spreadsheet reports 2. Retained database value with visible conflict.",
+      "checkedOn": "2026-10-25"
     },
     {
       "id": "microelectronics-soldering-quantity",
@@ -1380,7 +1381,8 @@ window.HIDEOUT_DATA = {
       "sourceUrl": "https://gzwhideout.com/workshop/micro-electronics/2",
       "alternateSourceUrl": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRQRTtotA1PTfVGgtAfh3eJDQLsJaS4YrXRma_ytUNETwNFoCeu-rQslY5JJlTCpJ9xuqaA8v6iujqM/pubhtml?gid=0&single=true",
       "status": "unresolved",
-      "note": "GZW Hideout reports 2 Soldering Iron; launch-day community sheet reports 1. Retained database value with visible conflict."
+      "note": "GZW Hideout reports 2 Soldering Iron; community spreadsheet reports 1. Retained database value with visible conflict.",
+      "checkedOn": "2026-10-25"
     },
     {
       "id": "ventilation-tier-number",
@@ -1392,7 +1394,34 @@ window.HIDEOUT_DATA = {
       "sourceUrl": "https://gzwhideout.com/laboratory/ventilation-system/3",
       "alternateSourceUrl": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRQRTtotA1PTfVGgtAfh3eJDQLsJaS4YrXRma_ytUNETwNFoCeu-rQslY5JJlTCpJ9xuqaA8v6iujqM/pubhtml?gid=0&single=true",
       "status": "unresolved",
-      "note": "Database presents Fan at level1 and Ventilation at level3, explicitly requiring level1 first. Community sheet places identical advanced recipe in level2 column. Preserve source numbering and previousLevel1; do not create a fictional level2 recipe."
+      "note": "Database presents Fan at level1 and Ventilation at level3, explicitly requiring level1 first. Community spreadsheet places identical advanced recipe in level2 column. Preserve source numbering and previousLevel1; do not create a fictional level2 recipe.",
+      "checkedOn": "2026-10-25"
+    },
+    {
+      "id": "laboratory-storage-electrical-omission",
+      "stationId": "laboratory-storage-equipment",
+      "level": 2,
+      "field": "items.electrical-parts",
+      "selectedValue": 1,
+      "alternateValue": 0,
+      "sourceUrl": "https://gzwhideout.com/laboratory/storage-equipment/2",
+      "alternateSourceUrl": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRQRTtotA1PTfVGgtAfh3eJDQLsJaS4YrXRma_ytUNETwNFoCeu-rQslY5JJlTCpJ9xuqaA8v6iujqM/pubhtml?gid=0&single=true",
+      "status": "unresolved",
+      "checkedOn": "2026-10-25",
+      "note": "GZW Hideout lists 1 Electrical Parts for the Beverage Cooler; the community spreadsheet does not list it. An omission is not proof that none are needed. Retained the database quantity pending confirmation."
+    },
+    {
+      "id": "hardware-electrical-quantity",
+      "stationId": "workshop-hardware",
+      "level": 3,
+      "field": "items.electrical-parts",
+      "selectedValue": 5,
+      "alternateValue": 1,
+      "sourceUrl": "https://gzwhideout.com/workshop/hardware/3",
+      "alternateSourceUrl": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRQRTtotA1PTfVGgtAfh3eJDQLsJaS4YrXRma_ytUNETwNFoCeu-rQslY5JJlTCpJ9xuqaA8v6iujqM/pubhtml?gid=0&single=true",
+      "status": "unresolved",
+      "checkedOn": "2026-10-25",
+      "note": "GZW Hideout lists 5 Electrical Parts for the Dedicated Server Rack; the community spreadsheet lists 1. Retained the database quantity pending confirmation."
     }
   ],
   "sources": [
@@ -1400,39 +1429,66 @@ window.HIDEOUT_DATA = {
       "id": "gzw-hideout",
       "name": "GZW Hideout community tracker",
       "url": "https://gzwhideout.com",
-      "checkedOn": "2026-10-22",
+      "checkedOn": "2026-10-25",
       "type": "community-database",
-      "access": "Read successfully through browser; web text tool unavailable",
-      "scope": "All visible station-level pages and 73-item tracker catalogue",
+      "access": "All three room listings, 36 recipe pages, and the 73-entry tracker read successfully through the browser",
+      "scope": "Rechecked all 36 recipes: item quantities, cash, prior levels, capabilities, and benefits match the previous catalogue.",
       "confidence": "reported"
     },
     {
       "id": "community-sheet",
-      "name": "Launch-day community hideout materials spreadsheet",
+      "name": "Community hideout materials spreadsheet",
       "url": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRQRTtotA1PTfVGgtAfh3eJDQLsJaS4YrXRma_ytUNETwNFoCeu-rQslY5JJlTCpJ9xuqaA8v6iujqM/pubhtml?gid=0&single=true",
-      "checkedOn": "2026-10-22",
+      "checkedOn": "2026-10-25",
       "type": "community-spreadsheet",
-      "access": "Read successfully through browser",
-      "scope": "Partial stations/tiers; many question marks and speculative Level4 column",
-      "confidence": "partial-and-conflicting"
+      "access": "Read the published table, including all 15 station sections",
+      "scope": "Now lists all 15 stations and 36 upgrades. Four ingredient differences and one level-numbering difference remain; totals are not treated as verified in-game.",
+      "confidence": "conflicting"
     },
     {
       "id": "reddit-materials",
       "name": "List of materials for the hideout — let's crowdsource it",
       "url": "https://www.reddit.com/r/GrayZoneWarfare/comments/1xcb4az/list_of_materials_for_the_hideout_lets/",
-      "checkedOn": "2026-10-22",
+      "checkedOn": "2026-10-25",
       "type": "community-report",
-      "scope": "Several tier1 recipes and Generator tier2; links published sheet",
+      "scope": "Original player reports behind the spreadsheet, including later-tier additions. Does not independently resolve the five flagged differences.",
       "confidence": "partial"
     },
     {
       "id": "official-features",
       "name": "MADFINGER Games: New Features in 0.5",
       "url": "https://www.grayzonewarfare.com/news/new-features-rogue-ops-devlog",
-      "checkedOn": "2026-10-22",
+      "checkedOn": "2026-10-25",
       "type": "official",
       "scope": "Confirms three rooms, room upgrade levels, electricity and recipe unlocks; no complete item quantities",
       "confidence": "official"
+    },
+    {
+      "id": "official-release",
+      "name": "MADFINGER Games: Rogue Ops release changelog",
+      "url": "https://www.grayzonewarfare.com/news/rogue-ops-out-now-changelog",
+      "checkedOn": "2026-10-25",
+      "type": "official",
+      "scope": "Official Update 0.5.0.1 release notes confirm hideout rooms, stations, power, crafting, and resource acquisition. They do not publish individual station recipes.",
+      "confidence": "official"
+    },
+    {
+      "id": "official-backend-hotfix",
+      "name": "MADFINGER Games: 23 October backend hotfix",
+      "url": "https://steamcommunity.com/app/2479810/allnews/?l=english",
+      "checkedOn": "2026-10-25",
+      "type": "official",
+      "scope": "The 23 October 0.5.0.1 backend hotfix fixes rank-earned stash space and queue connections. No hideout recipe or material-quantity changes are listed.",
+      "confidence": "official"
+    },
+    {
+      "id": "catalogue-review-20261025",
+      "name": "Tracker data review: 25 October 2026",
+      "url": "https://github.com/Nl256/gzw-hideout-tracker/blob/main/research/2026-10-25.md",
+      "checkedOn": "2026-10-25",
+      "type": "tracker-review",
+      "scope": "No confirmed recipe changes. Rechecked 15 stations, 36 upgrades, and 73 entries; added two warnings for a total of five. Saved progress and the selected build totals are unchanged.",
+      "confidence": "reviewed-community-data"
     }
   ],
   "notes": [
@@ -1447,5 +1503,7 @@ window.HIDEOUT_DATA = {
     "US Dollars is separated into each recipe's money field. If retaining it in the item catalogue, label currency distinctly in UI.",
     "Crafting/production ingredient catalogue is included, but their output recipes and unlocks were not extracted; do not imply these recipes are included.",
     "Accuracy overrides unsupported completeness claims: describe as the complete currently listed community catalogue with 3 unresolved source conflicts, rather than official complete 0.5 data."
-  ]
-};
+  ],
+  "reviewSummary": "Rechecked all 36 listed upgrades and 73 item entries on 25 October 2026. The database recipes, cash costs, and prerequisites match the previous catalogue. The updated community spreadsheet reveals two more differences, bringing the total to five. Existing quantities are retained pending confirmation."
+}
+;

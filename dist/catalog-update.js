@@ -46,6 +46,7 @@
  const url=v=>{try{const u=new URL(v);return u.protocol==='https:'&&!u.username&&!u.password;}catch{return false;}};
  function validate(d){
   if(!d||d.schemaVersion!==1||!text(d.checkedOn,30)||!text(d.gameVersion,100)||!Array.isArray(d.items)||!d.items.length||d.items.length>2000||!Array.isArray(d.stations)||!d.stations.length||d.stations.length>200||!Array.isArray(d.conflicts)||!Array.isArray(d.sources))fail();
+  if(d.reviewSummary!==undefined&&!text(d.reviewSummary))fail();
   const items=new Set(),stations=new Map();
   for(const i of d.items){if(!id(i.id)||items.has(i.id)||!text(i.name,150)||!text(i.category,100)||!url(i.sourceUrl))fail();items.add(i.id);}
   if(!items.has('us-dollars'))fail();
