@@ -28,7 +28,7 @@
   if(notify)window.dispatchEvent(new CustomEvent('hideout:changed',{detail:{key:activeKey}}));
  }
  function change(label,fn){C.remember(profile(),label);fn(profile());save();render();}
- function setView(next){if(!['desk','upgrades','inventory','sources','feedback'].includes(next))return;view=next;render();}
+ function setView(next){if(!['desk','upgrades','inventory','sources','feedback','stream'].includes(next))return;view=next;render();}
  function restoreInput(type,id){const target=$(`[data-${type}="${id}"]`);target?.focus();}
  function table(items,inventory=false){
   if(!items.length)return `<div class="empty"><h3>${inventory?'No materials found':Object.keys(profile().goals).length?'Nothing left in this view':'Choose your next upgrade'}</h3><p>${inventory?'Try another search or category.':Object.keys(profile().goals).length?'Your filters may be hiding covered items. Materials covered does not verify power, capability, or recipe unlocks.':'Pick a station in Hideout upgrades to build a shared shopping list.'}</p>${!inventory?'<button class="button secondary" data-open-upgrades>Open hideout upgrades</button>':''}</div>`;
@@ -95,7 +95,7 @@
    $('#'+id).href=url.href;
   }
  }
- function render(){renderHeader();renderDesk();if(view==='upgrades')renderUpgrades();if(view==='inventory')renderInventory();if(view==='sources')renderSources();if(view==='feedback')renderFeedback();}
+ function render(){renderHeader();renderDesk();if(view==='upgrades')renderUpgrades();if(view==='inventory')renderInventory();if(view==='sources')renderSources();if(view==='feedback')renderFeedback();window.dispatchEvent(new Event('hideout:rendered'));}
  function modal(content){$('#modal-content').innerHTML=content;if(!$('#modal').open)$('#modal').showModal();}
  const header=title=>`<div class="modal-header"><h2>${title}</h2><button class="icon-button" data-close-modal aria-label="Close dialog">×</button></div>`;
  function close(){ $('#modal').close();pendingImport=null; }
@@ -168,6 +168,7 @@
  if(initial&&!recovery)save();
  if(!storageAvailable){$('#storage-warning').hidden=false;$('#storage-warning').textContent='Browser storage is unavailable. Export a backup before closing this page.';$('#save-status').textContent='Unable to save';$('#save-status').classList.add('failed');}
  window.HideoutApp={
+  getOverlaySnapshot:options=>window.HideoutOverlayModel.snapshot(profile(),D,C,options),
   guestKey:KEY, getKey:()=>activeKey, getState:()=>C.clone(state), clean:raw=>C.validateImport(raw,D),
   guest:()=>{try{return C.validateImport(JSON.parse(localStorage.getItem(KEY)),D);}catch{return C.newState(uid());}},
   blank:()=>C.newState(uid()),

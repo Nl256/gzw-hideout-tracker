@@ -1,4 +1,4 @@
-const {app,BrowserWindow,Menu,protocol,shell,session,dialog,ipcMain}=require('electron');
+const {app,BrowserWindow,Menu,protocol,shell,session,dialog,ipcMain,screen,clipboard}=require('electron');
 const path=require('node:path');
 const fs=require('node:fs');
 const qa=process.argv.includes('--smoke-test');
@@ -12,6 +12,7 @@ app.setName('GZW Hideout Tracker');
 protocol.registerSchemesAsPrivileged([{scheme:'hideout',privileges:{standard:true,secure:true,supportFetchAPI:true,corsEnabled:true}}]);
 let mainWindow;
 let updates;
+let overlay;
 const {createLogin,validAuthorize,ORIGIN}=require('./oauth.cjs');
 const login=createLogin({onResult:result=>{if(mainWindow&&!mainWindow.isDestroyed()){mainWindow.webContents.send('hideout:signin-result',result);mainWindow.show();mainWindow.focus();}}});
 function checkSender(event){if(event.sender!==mainWindow?.webContents||event.senderFrame!==mainWindow.webContents.mainFrame||!event.senderFrame.url.startsWith('hideout://app/'))throw Error('Untrusted request');}
@@ -21,14 +22,14 @@ ipcMain.handle('hideout:cancel-signin',event=>{checkSender(event);login.close();
 for(const [channel,action]of [['state','snapshot'],['check','check'],['download','download'],['install','install'],['later','later']]){
  ipcMain.handle('hideout:update-'+channel,event=>{checkSender(event);return updates?updates[action](action==='check'):({status:'current',currentVersion:app.getVersion(),message:'Updates are available in the installed Windows app.'});});
 }
-app.on('before-quit',()=>login.close());
+app.on('before-quit',()=>{login.close();overlay?.dispose();});
 
 function external(url){try{const parsed=new URL(url);if(parsed.protocol==='https:')shell.openExternal(parsed.href);}catch{}}
 const single=app.requestSingleInstanceLock();
 if(!single){app.quit();}else{
  app.on('second-instance',()=>{if(mainWindow){if(mainWindow.isMinimized())mainWindow.restore();mainWindow.show();mainWindow.focus();}});
  app.whenReady().then(async()=>{
-  protocol.handle('hideout',async request=>{
+  const serveUi=async request=>{
    try{
     const url=new URL(request.url);if(url.hostname!=='app')return new Response('Not found',{status:404});
     const relative=decodeURIComponent(url.pathname==='/'?'/index.html':url.pathname);
@@ -37,7 +38,14 @@ if(!single){app.quit();}else{
     const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.woff2':'font/woff2','.woff':'font/woff','.ttf':'font/ttf','.txt':'text/plain; charset=utf-8'};
     return new Response(await fs.promises.readFile(target),{headers:{'Content-Type':types[path.extname(target)]||'application/octet-stream','Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://nl256.github.io; font-src 'self'; connect-src 'self' https://iptkvqddczvrxuxqoeil.supabase.co https://nl256.github.io/gzw-hideout-tracker/; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"}});
    }catch{return new Response('Not found',{status:404});}
-  });
+  };
+  protocol.handle('hideout',serveUi);
+  const overlaySession=session.fromPartition('hideout-floating');
+  overlaySession.protocol.handle('hideout',serveUi);
+  overlaySession.setPermissionRequestHandler((_contents,_permission,callback)=>callback(false));
+  overlaySession.setPermissionCheckHandler(()=>false);
+  overlaySession.webRequest.onBeforeRequest((details,callback)=>{let allowed=false;try{const url=new URL(details.url);allowed=url.protocol==='hideout:'&&url.hostname==='app';}catch{}callback({cancel:!allowed});});
+  overlay=require('./overlay.cjs').createOverlay({BrowserWindow,ipcMain,screen,clipboard,overlaySession,uiRoot,dataRoot,checkMain:checkSender,show:!qa,notify:value=>{if(mainWindow&&!mainWindow.isDestroyed())mainWindow.webContents.send('hideout:overlay-status',value);}});
   session.defaultSession.setPermissionRequestHandler((_webContents,_permission,callback)=>callback(false));
   session.defaultSession.setPermissionCheckHandler(()=>false);
   if(app.isPackaged&&process.platform==='win32'&&!qa){
@@ -59,7 +67,7 @@ if(!single){app.quit();}else{
   let windowState={width:1440,height:1000};
   const windowFile=path.join(dataRoot,'window.json');
   try{const saved=JSON.parse(fs.readFileSync(windowFile,'utf8'));if(saved.width>=900&&saved.width<=7680&&saved.height>=650&&saved.height<=4320)windowState={width:saved.width,height:saved.height};}catch{}
-  mainWindow=new BrowserWindow({...windowState,minWidth:780,minHeight:600,show:false,title:'GZW Hideout Tracker',backgroundColor:'#10140f',icon:path.join(__dirname,'app.png'),autoHideMenuBar:true,webPreferences:{preload:path.join(__dirname,'preload.cjs'),nodeIntegration:false,contextIsolation:true,sandbox:true,webSecurity:true,devTools:!app.isPackaged}});
+  mainWindow=new BrowserWindow({...windowState,minWidth:780,minHeight:600,show:false,title:'GZW Hideout Tracker',backgroundColor:'#10140f',icon:path.join(__dirname,'app.png'),autoHideMenuBar:true,webPreferences:{preload:path.join(__dirname,'preload.cjs'),nodeIntegration:false,contextIsolation:true,sandbox:true,webSecurity:true,backgroundThrottling:false,devTools:!app.isPackaged}});
   Menu.setApplicationMenu(null);
   mainWindow.webContents.setWindowOpenHandler(({url})=>{external(url);return {action:'deny'};});
   mainWindow.webContents.on('will-navigate',(event,url)=>{if(!url.startsWith('hideout://app/')){event.preventDefault();external(url);}});
@@ -68,6 +76,8 @@ if(!single){app.quit();}else{
   mainWindow.once('ready-to-show',()=>{if(!qa)mainWindow.show();});
   mainWindow.webContents.on('did-fail-load',(_event,errorCode,description)=>{if(errorCode!==-3&&!qa)dialog.showErrorBox('Unable to open tracker',description);});
   await mainWindow.loadURL('hideout://app/index.html?desktop=1');
+  await overlay.restore();
+  mainWindow.on('closed',()=>{overlay.dispose();app.quit();});
   if(updates){
    const initialCheck=setTimeout(()=>updates.check(),15000);initialCheck.unref();
    const repeatCheck=setInterval(()=>updates.check(),60*60*1000);repeatCheck.unref();

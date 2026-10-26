@@ -53,6 +53,20 @@ The Windows app checks for new app versions when it opens, when you return, and 
 
 If an update cannot download or verify, keep using the current app and try again later. Local progress stays on this PC, including changes waiting for cloud sync. See the [release notes](https://github.com/Nl256/gzw-hideout-tracker/releases/latest) for what changed.
 
+## Stream overlay and floating list
+
+Open **Stream & floating list** to preview the materials needed for your active operator’s goals and personal reserves. Counts follow stash edits, completed upgrades, profile switches, and incoming cloud saves. Account details and operator names are never included in the overlay.
+
+**Floating list:** choose **Open floating list**, drag the title bar, and resize the window. In the Windows app, **Keep on top** lets it sit above other windows. The app remembers its size and position. Use borderless or windowed game mode if exclusive fullscreen covers it. In a browser, keep the original tracker tab open and allow its pop-up.
+
+**OBS on the same PC:** in the Windows app, choose **Enable OBS overlay**, then **Copy OBS link**. In OBS, add a **Browser Source**, leave Local file off, and paste the link into URL. Start at **420 × 900**; increase the height for larger text or more rows. Position and scale it in your scene. The canvas around the list is transparent. No OBS plug-in or additional software is required.
+
+Keep the tracker running or minimized. The connection works locally without signing in and reconnects when the app returns. If you enable it, it stays enabled across app restarts until you turn it off. The link only works on this PC; it is not a public progress-sharing link. A disconnected overlay hides stale quantities and shows a reconnect message.
+
+Adjust text size, background opacity, missing-only filtering, and cash visibility in the tracker. OBS can rotate through longer lists every eight seconds; the floating window shows the whole list with scrolling. Appearance settings stay on this device.
+
+The overlay uses progress entered in the tracker. Automatic imports from an official game API are not available yet.
+
 ## Bugs and suggestions
 
 Open **Feedback** in the tracker to **Report a bug**, **Suggest an improvement**, or browse existing conversations. Reports go to [GitHub Issues](https://github.com/Nl256/gzw-hideout-tracker/issues), where the maintainer can reply and track fixes. Anyone can read them; a free GitHub account is needed to post or comment. Posts and attachments are public, so leave out passwords, private account details, and save backups. The tracker only fills in its version, app type, and catalogue date.

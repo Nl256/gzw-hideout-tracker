@@ -18,4 +18,5 @@ await writeFile('dist/catalog.js','window.HIDEOUT_DATA = '+catalogue+';\n');
 await writeFile('dist/catalog-manifest.json',JSON.stringify({schemaVersion:1,revision:createHash('sha256').update(catalogue).digest('hex'),publishedAt:new Date().toISOString()},null,2));
 const versionedHtml=await versionAssets(html.replace(/<meta name="application-version" content="[^"]*">/,`<meta name="application-version" content="${version}">`),file=>readFile('dist/'+file));
 await writeFile('dist/index.html',versionedHtml);
+await writeFile('dist/overlay.html',await versionAssets(await readFile('dist/overlay.html','utf8'),file=>readFile('dist/'+file)));
 console.log('Updated script and stylesheet cache keys from their contents.');

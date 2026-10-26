@@ -1,0 +1,30 @@
+const test=require('node:test'),assert=require('node:assert/strict'),path=require('node:path'),http=require('node:http');
+const {createOverlayServer}=require('../app/overlay-server.cjs');
+const uiRoot=path.resolve(__dirname,'../../dist');
+const token='a'.repeat(64);
+const request=(url,options={})=>new Promise((resolve,reject)=>{const req=http.request(url,options,response=>{let text='';response.setEncoding('utf8');response.on('data',chunk=>text+=chunk);response.on('end',()=>resolve({status:response.statusCode,headers:response.headers,text}));});req.on('error',reject);req.end();});
+test('OBS endpoint is local, read-only, token-protected, and serves only overlay assets',async t=>{
+ let current={connected:true,snapshot:{items:[{id:'wood',need:4}]}};
+ const server=createOverlayServer({uiRoot,port:0,token,getSnapshot:()=>current});t.after(()=>server.stop());
+ const status=await server.start(),url=new URL(status.url),base=url.origin;
+ assert.equal(url.hostname,'127.0.0.1');assert.equal(status.enabled,true);
+ assert.equal((await request(status.url)).status,200);
+ const read=await request(`${base}/snapshot?token=${token}`);assert.deepEqual(JSON.parse(read.text),current);assert.equal(read.headers['access-control-allow-origin'],undefined);assert.equal(read.headers['cache-control'],'no-store');
+ current={connected:true,snapshot:{items:[{id:'wood',need:2}]}};
+ assert.deepEqual(JSON.parse((await request(`${base}/snapshot?token=${token}`)).text),current);
+ for(const suffix of ['/snapshot','/snapshot?token=wrong','/overlay.html',`/snapshot?token=${'é'.repeat(64)}`])assert.equal((await request(base+suffix)).status,403);
+ assert.equal((await request(status.url,{headers:{Host:'evil.example'}})).status,403);
+ assert.equal((await request(status.url,{headers:{Origin:'https://evil.example'}})).status,403);
+ assert.equal((await request(status.url,{headers:{'Sec-Fetch-Site':'cross-site'}})).status,403);
+ assert.equal((await request(status.url,{method:'POST'})).status,405);
+ for(const suffix of ['/index.html','/cloud-config.js','/catalog.json','/../package.json','/assets/items/../../cloud.js'])assert.equal((await request(base+suffix)).status,404);
+ for(const suffix of ['/overlay-view.js','/overlay-render.js','/overlay-model.js','/overlay.css','/assets/items/wood.svg','/assets/fonts/font-11.woff2'])assert.equal((await request(base+suffix)).status,200);
+ await server.stop();assert.equal(server.status().enabled,false);await assert.rejects(request(status.url));
+});
+test('repeated start is idempotent, port conflicts are clear, and stopping releases the port',async t=>{
+ const first=createOverlayServer({uiRoot,port:0,token,getSnapshot:()=>({connected:false})});t.after(()=>first.stop());
+ const [a,b]=await Promise.all([first.start(),first.start()]);assert.equal(a.url,b.url);
+ const second=createOverlayServer({uiRoot,port:Number(new URL(a.url).port),token,getSnapshot:()=>({connected:false})});t.after(()=>second.stop());
+ await assert.rejects(second.start(),/already in use/);
+ await first.stop();const next=await second.start();assert.equal(next.url,a.url);
+});
